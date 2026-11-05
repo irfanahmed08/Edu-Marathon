@@ -1,41 +1,36 @@
 <!DOCTYPE html>
-<html lang="bn" class="scroll-smooth">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edu Marathon | HSC & Admission Learning Hub</title>
+  <title>রসায়ন অধ্যায়ভিত্তিক লার্নিং পোর্টাল</title>
   
-  <!-- Google Fonts: Inter & Hind Siliguri for Bengali typography -->
+  <!-- Bengali Typography: Hind Siliguri & Noto Sans Bengali -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- Tailwind CSS CDN -->
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            brand: {
-              dark: '#080E1E',
-              card: '#0F1A36',
-              surface: '#152347',
-              border: '#1F315E',
-              cyan: '#00F0FF',
-              cyanHover: '#00D1DF',
-              amber: '#FF9E00',
-              rose: '#FF3366',
-              muted: '#8B9BB4'
+            sidebar: {
+              DEFAULT: '#52217e', /* Exact deep royal purple from your screenshot */
+              dark: '#3f1863',
+              card: '#7847a1',
+              cardHover: '#8b57b5',
+              cardActive: '#2a62a9' /* Blue selection highlight matching screenshot 2 */
             }
           },
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', '"Hind Siliguri"', 'sans-serif'],
-            bengali: ['"Hind Siliguri"', 'sans-serif']
+            bengali: ['"Hind Siliguri"', 'sans-serif'],
+            sans: ['"Inter"', '"Hind Siliguri"', 'sans-serif']
           }
         }
       }
@@ -43,1524 +38,1174 @@
   </script>
 
   <style>
-    /* Custom scrollbars and glowing effects */
+    body {
+      font-family: 'Hind Siliguri', 'Inter', sans-serif;
+    }
+    /* Scrollbar styling for sidebar */
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
     }
     ::-webkit-scrollbar-track {
-      background: #080E1E;
+      background: #461b6e;
     }
     ::-webkit-scrollbar-thumb {
-      background: #1F315E;
-      border-radius: 9999px;
+      background: #7847a1;
+      border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #00F0FF;
+      background: #9d65cb;
     }
 
-    .glass-nav {
-      background: rgba(8, 14, 30, 0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    
-    .glow-cyan {
-      box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.35);
-    }
-    
-    .glow-amber {
-      box-shadow: 0 0 25px -5px rgba(255, 158, 0, 0.35);
+    /* Modal dialog styling matching Image 2 */
+    .prompt-box-shadow {
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
     }
 
-    .gradient-border {
-      background: linear-gradient(135deg, rgba(0,240,255,0.4) 0%, rgba(31,49,94,0.1) 100%);
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
     }
-
-    .circuit-pattern {
-      background-image: radial-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 1px);
-      background-size: 24px 24px;
+    .shake-error {
+      animation: shake 0.35s ease-in-out;
     }
   </style>
 </head>
 
-<body class="bg-brand-dark text-slate-100 font-sans antialiased circuit-pattern min-h-screen flex flex-col selection:bg-brand-cyan selection:text-brand-dark">
+<body class="bg-gray-100 text-slate-800 antialiased min-h-screen flex flex-col overflow-x-hidden selection:bg-purple-600 selection:text-white">
 
-  <!-- ================= TOP NOTIFICATION BANNER ================= -->
-  <div class="bg-gradient-to-r from-cyan-600/30 via-indigo-600/40 to-amber-500/30 border-b border-brand-border/60 py-2 px-4 text-xs md:text-sm text-center font-medium">
-    <span class="inline-flex items-center gap-2">
-      <span class="px-2 py-0.5 rounded-full bg-brand-cyan/20 text-brand-cyan text-xs font-bold uppercase tracking-wider animate-pulse">BUET '26</span>
-      <span>নতুন লেকচার যুক্ত হয়েছে: <strong>ক্যালোরিমিতি ও বিদ্যুৎ শক্তি শর্টকাট ম্যারাথন</strong>!</span>
-      <a href="#featured-video" class="underline text-brand-cyan hover:text-white ml-2">এখনই দেখো →</a>
-    </span>
+  <!-- Mobile Top Bar with Sidebar Hamburger -->
+  <div class="lg:hidden bg-[#52217e] text-white px-4 py-3 flex items-center justify-between shadow-md z-30">
+    <div class="flex items-center gap-3">
+      <button id="mobileSidebarToggle" class="p-2 rounded hover:bg-white/10 text-white focus:outline-none">
+        <i class="fa-solid fa-bars text-xl"></i>
+      </button>
+      <span class="font-bold text-lg font-bengali">অধ্যায়সমূহ</span>
+    </div>
+    <button onclick="openManageChaptersModal()" class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full flex items-center gap-1.5 transition">
+      <i class="fa-solid fa-gear"></i> সেটিংস
+    </button>
   </div>
 
-  <!-- ================= MAIN NAVIGATION ================= -->
-  <header class="sticky top-0 z-40 glass-nav border-b border-brand-border/80 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-      
-      <!-- Brand Logo -->
-      <a href="#" class="flex items-center gap-3 group flex-shrink-0">
-        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-brand-cyan to-indigo-600 flex items-center justify-center text-brand-dark font-extrabold text-xl shadow-lg group-hover:scale-105 transition-transform">
-          <i class="fa-solid fa-bolt text-brand-dark text-xl"></i>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
-            Edu<span class="text-brand-cyan">Marathon</span>
-          </span>
-          <span class="text-[10px] tracking-wider uppercase text-brand-muted font-bold -mt-1 font-bengali">
-            হাতে-কলমে পূর্ণাঙ্গ প্রস্তুতি
-          </span>
-        </div>
-      </a>
+  <div class="flex flex-1 relative overflow-hidden h-[calc(100vh-0px)]">
 
-      <!-- Desktop Navigation Links -->
-      <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-300">
-        <a href="#playlists" class="hover:text-brand-cyan transition-colors flex items-center gap-1.5">
-          <i class="fa-solid fa-layer-group text-xs text-brand-cyan"></i> প্লেলিস্ট
-        </a>
-        <a href="#notes-hub" class="hover:text-brand-cyan transition-colors flex items-center gap-1.5">
-          <i class="fa-solid fa-file-pdf text-xs text-brand-amber"></i> ক্লাস নোটস
-        </a>
-        <a href="#formula-bank" class="hover:text-brand-cyan transition-colors flex items-center gap-1.5">
-          <i class="fa-solid fa-calculator text-xs text-brand-rose"></i> সূত্র ব্যাংক
-        </a>
-        <a href="#quiz-zone" class="hover:text-brand-cyan transition-colors flex items-center gap-1.5">
-          <i class="fa-solid fa-stopwatch text-xs text-emerald-400"></i> কুইজ ম্যারাথন
-        </a>
-        <a href="#about" class="hover:text-brand-cyan transition-colors">আমাদের কথা</a>
-      </nav>
-
-      <!-- Search & CTA Actions -->
-      <div class="flex items-center gap-3">
-        <!-- Live Quick Search Trigger -->
-        <div class="relative hidden sm:block w-48 md:w-60">
-          <input 
-            type="text" 
-            id="globalSearchInput" 
-            placeholder="বিষয় বা চ্যাপ্টার খুঁজুন..." 
-            class="w-full bg-brand-surface/80 border border-brand-border text-xs rounded-full pl-9 pr-4 py-2 focus:outline-none focus:border-brand-cyan text-slate-200 placeholder-slate-400 transition"
-          >
-          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-400"></i>
-        </div>
-
-        <!-- YouTube Subscribe Button -->
-        <a 
-          href="https://youtube.com" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="hidden sm:inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-full transition-transform active:scale-95 shadow-md shadow-red-600/30"
-        >
-          <i class="fa-brands fa-youtube text-sm"></i>
-          <span>সাবস্ক্রাইব</span>
-        </a>
-
-        <!-- Upload Note Button -->
-        <button 
-          onclick="openUploadModal()" 
-          class="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-cyan to-cyan-500 hover:brightness-110 text-brand-dark font-bold text-xs px-3.5 py-2.5 rounded-full shadow-lg glow-cyan transition"
-        >
-          <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
-          <span class="hidden md:inline">নোট জমা দাও</span>
-        </button>
-
-        <!-- Mobile Menu Toggle Button -->
-        <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-lg bg-brand-surface border border-brand-border text-slate-300 hover:text-white">
-          <i class="fa-solid fa-bars-staggered text-lg"></i>
-        </button>
-      </div>
-
-    </div>
-
-    <!-- Mobile Dropdown Navigation -->
-    <div id="mobileMenu" class="hidden lg:hidden bg-brand-card/95 border-b border-brand-border px-6 py-4 space-y-3">
-      <div class="relative mb-3">
-        <input 
-          type="text" 
-          id="mobileSearchInput" 
-          placeholder="লেকচার বা নোট সার্চ করুন..." 
-          class="w-full bg-brand-surface border border-brand-border text-sm rounded-xl pl-10 pr-4 py-2.5 text-white"
-        >
-        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
-      </div>
-      <a href="#playlists" class="block py-2 text-slate-200 font-semibold border-b border-brand-border/40">📚 প্লেলিস্ট ও কোর্সসমূহ</a>
-      <a href="#notes-hub" class="block py-2 text-slate-200 font-semibold border-b border-brand-border/40">📝 ক্লাস নোটস ও লেকচার শিট</a>
-      <a href="#formula-bank" class="block py-2 text-slate-200 font-semibold border-b border-brand-border/40">⚡ ফর্মুলা ও শর্টকাট চিটশিট</a>
-      <a href="#quiz-zone" class="block py-2 text-slate-200 font-semibold border-b border-brand-border/40">🎯 ৩ মিনিটের কুইজ ম্যারাথন</a>
-      <div class="pt-2 flex gap-3">
-        <button onclick="openUploadModal()" class="w-full py-2.5 rounded-xl bg-brand-cyan text-brand-dark font-bold text-center text-sm">নোট আপলোড করুন</button>
-        <a href="https://youtube.com" target="_blank" class="w-full py-2.5 rounded-xl bg-red-600 text-white font-bold text-center text-sm">YouTube চ্যানেল</a>
-      </div>
-    </div>
-  </header>
-
-  <!-- ================= HERO SECTION ================= -->
-  <section class="relative pt-12 pb-20 overflow-hidden">
-    <!-- Ambient Background Lighting -->
-    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-brand-cyan/15 blur-[120px] rounded-full pointer-events-none"></div>
-    <div class="absolute top-40 right-10 w-[300px] h-[300px] bg-brand-amber/10 blur-[100px] rounded-full pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        
-        <!-- Hero Text & Value Proposition -->
-        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+    <!-- ================= 1. LEFT SIDEBAR (EXACT REPLICATION) ================= -->
+    <aside 
+      id="sidebar" 
+      class="fixed inset-y-0 left-0 z-40 w-80 lg:w-[350px] bg-[#52217e] text-white flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none lg:static"
+    >
+      <!-- Sidebar Header -->
+      <div class="pt-6 px-6 pb-2">
+        <div class="flex items-center justify-between">
+          <h1 class="text-2xl font-bold tracking-wide font-bengali text-white">অধ্যায়সমূহ</h1>
           
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-surface border border-brand-border/80 text-xs font-semibold text-brand-cyan">
-            <span class="w-2 h-2 rounded-full bg-brand-cyan animate-ping"></span>
-            HSC 2025, 2026 ও বুয়েট/মেডিকেল ভর্তি প্রস্তুতি
-          </div>
-
-          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight sm:leading-none">
-            কনসেপ্ট হবে পানির মতো <br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan via-teal-300 to-amber-400">
-              সহজ ও ক্রিস্টাল ক্লিয়ার!
-            </span>
-          </h1>
-
-          <p class="text-slate-300 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto lg:mx-0 font-bengali leading-relaxed">
-            <strong>Edu Marathon</strong> এ আমরা গতানুগতিক মুখস্থ বিদ্যার বদলে ভিজ্যুয়াল অ্যানিমেশন, শর্টকাট হ্যাকস এবং হ্যান্ডরিটেন নোটের মাধ্যমে ফিজিক্স, কেমিস্ট্রি ও হায়ার ম্যাথের ভীতি দূর করি।
-          </p>
-
-          <!-- Action Buttons -->
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-            <a href="#playlists" class="px-7 py-3.5 rounded-full bg-gradient-to-r from-brand-cyan to-cyan-400 text-brand-dark font-extrabold text-sm flex items-center gap-2 shadow-lg glow-cyan hover:brightness-110 active:scale-95 transition">
-              <i class="fa-solid fa-play"></i>
-              <span>ম্যারাথন ক্লাস শুরু করো</span>
-            </a>
-            
-            <a href="#notes-hub" class="px-7 py-3.5 rounded-full bg-brand-surface/90 hover:bg-brand-surface border border-brand-border text-white font-bold text-sm flex items-center gap-2 hover:border-brand-amber/80 transition active:scale-95">
-              <i class="fa-solid fa-download text-brand-amber"></i>
-              <span>ফ্রি হ্যান্ডরিটেন নোটস</span>
-            </a>
-          </div>
-
-          <!-- Trust & Milestone Metric Pills -->
-          <div class="pt-6 grid grid-cols-3 gap-3 border-t border-brand-border/60 max-w-lg mx-auto lg:mx-0">
-            <div class="p-3 rounded-2xl bg-brand-card/70 border border-brand-border/50 text-center">
-              <div class="text-xl sm:text-2xl font-black text-brand-cyan">৬৫,০০০+</div>
-              <div class="text-[11px] sm:text-xs text-brand-muted font-medium mt-0.5">অ্যাক্টিভ লার্নার্স</div>
-            </div>
-            <div class="p-3 rounded-2xl bg-brand-card/70 border border-brand-border/50 text-center">
-              <div class="text-xl sm:text-2xl font-black text-brand-amber">২৫০+</div>
-              <div class="text-[11px] sm:text-xs text-brand-muted font-medium mt-0.5">ফ্রি ভিডিও লেকচার</div>
-            </div>
-            <div class="p-3 rounded-2xl bg-brand-card/70 border border-brand-border/50 text-center">
-              <div class="text-xl sm:text-2xl font-black text-emerald-400">১৮০+</div>
-              <div class="text-[11px] sm:text-xs text-brand-muted font-medium mt-0.5">হ্যান্ডরিটেন PDF</div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Hero Visual / Live Spotlight Card -->
-        <div class="lg:col-span-5 relative">
-          <div class="p-2 sm:p-3 rounded-3xl bg-gradient-to-b from-brand-border via-brand-card to-brand-surface border border-brand-border shadow-2xl relative">
-            
-            <!-- Floating Badge 1 -->
-            <div class="absolute -top-4 -left-4 bg-brand-dark/95 border border-brand-cyan/60 rounded-2xl p-3 shadow-xl flex items-center gap-3 z-20">
-              <div class="w-9 h-9 rounded-xl bg-brand-cyan/20 text-brand-cyan flex items-center justify-center font-bold">
-                <i class="fa-solid fa-graduation-cap text-base"></i>
-              </div>
-              <div>
-                <p class="text-[11px] text-brand-muted">সর্বশেষ সাফল্য</p>
-                <p class="text-xs font-bold text-white">BUET 2024 এ ৭৩+ চান্সপ্রাপ্ত</p>
-              </div>
-            </div>
-
-            <!-- Spotlight Card Header -->
-            <div class="relative rounded-2xl overflow-hidden bg-brand-dark group">
-              <!-- Mock Video Thumbnail with Visualizer Graphic -->
-              <div class="h-60 sm:h-72 w-full bg-gradient-to-tr from-slate-950 via-brand-card to-indigo-950 p-6 flex flex-col justify-between relative overflow-hidden">
-                <div class="flex justify-between items-start z-10">
-                  <span class="px-2.5 py-1 rounded-md bg-red-600 text-[11px] font-bold tracking-wider uppercase text-white flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                    FEATURED MARATHON
-                  </span>
-                  <span class="text-xs font-mono bg-black/60 px-2 py-1 rounded border border-white/10 text-slate-300">
-                    42:15 mins
-                  </span>
-                </div>
-
-                <!-- Central Play Visual -->
-                <div class="my-auto text-center z-10">
-                  <button 
-                    onclick="openVideoModal('BUET স্পেশাল: ক্যালোরিমিতি ও বিদ্যুৎ শক্তির 1-লাইন হ্যাক', 'https://www.youtube.com/embed/dQw4w9WgXcQ')" 
-                    class="w-16 h-16 rounded-full bg-brand-cyan text-brand-dark flex items-center justify-center mx-auto text-xl shadow-lg glow-cyan hover:scale-110 active:scale-95 transition cursor-pointer"
-                  >
-                    <i class="fa-solid fa-play ml-1"></i>
-                  </button>
-                  <p class="mt-3 text-sm font-bold text-white font-bengali">ক্যালোরিমিতির মেগা ক্লাসটি দেখতে ক্লিক করো</p>
-                </div>
-
-                <!-- Abstract Circuit Glow in Thumbnail -->
-                <div class="absolute -bottom-10 -right-10 w-44 h-44 bg-brand-cyan/20 rounded-full blur-2xl"></div>
-                <div class="absolute -top-10 -left-10 w-44 h-44 bg-brand-amber/20 rounded-full blur-2xl"></div>
-              </div>
-
-              <!-- Card Sub-Bar -->
-              <div class="p-4 bg-brand-card flex items-center justify-between border-t border-brand-border/60">
-                <div>
-                  <h4 class="text-sm font-bold text-white">তাপ ও তাপগতিবিদ্যা: ফুল চ্যাপ্টার</h4>
-                  <p class="text-xs text-brand-muted">ইন্সট্রাক্টর: তানভীর আহমেদ (BUET '20)</p>
-                </div>
-                <button 
-                  onclick="previewNote('physics_thermal_01')" 
-                  class="px-3 py-1.5 rounded-lg bg-brand-surface hover:bg-brand-border text-xs font-semibold text-brand-amber border border-brand-border flex items-center gap-1"
-                >
-                  <i class="fa-regular fa-file-pdf"></i> শিট
-                </button>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= STATS & TICKER BAR ================= -->
-  <section class="border-y border-brand-border/80 bg-brand-card/40 py-6">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div class="flex items-center justify-center gap-3">
-          <i class="fa-solid fa-video text-2xl text-brand-cyan"></i>
-          <div class="text-left">
-            <h5 class="text-lg font-bold text-white">100% Free</h5>
-            <p class="text-xs text-brand-muted">কোয়ালিটি কনটেন্ট সবার জন্য</p>
-          </div>
-        </div>
-        <div class="flex items-center justify-center gap-3">
-          <i class="fa-solid fa-pen-ruler text-2xl text-brand-amber"></i>
-          <div class="text-left">
-            <h5 class="text-lg font-bold text-white">হাতে তৈরি শিট</h5>
-            <p class="text-xs text-brand-muted">প্রতিটি চ্যাপ্টারের বুয়েট নোট</p>
-          </div>
-        </div>
-        <div class="flex items-center justify-center gap-3">
-          <i class="fa-solid fa-circle-question text-2xl text-emerald-400"></i>
-          <div class="text-left">
-            <h5 class="text-lg font-bold text-white">ডাউট সলভিং</h5>
-            <p class="text-xs text-brand-muted">টেলিগ্রাম কমিউনিটি সাপোর্ট</p>
-          </div>
-        </div>
-        <div class="flex items-center justify-center gap-3">
-          <i class="fa-solid fa-award text-2xl text-brand-rose"></i>
-          <div class="text-left">
-            <h5 class="text-lg font-bold text-white">শীর্ষ মেন্টর</h5>
-            <p class="text-xs text-brand-muted">বুয়েট ও ঢাবির টপারদের গাইডেন্স</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= PLAYLISTS SECTION ================= -->
-  <section id="playlists" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-      <div>
-        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase text-brand-cyan tracking-wider">
-          <i class="fa-solid fa-play-circle"></i> Structured Marathon Playlists
-        </div>
-        <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-1">
-          ইউটিউব প্লেলিস্ট ও কমপ্লিট সিরিজ
-        </h2>
-        <p class="text-sm text-brand-muted mt-1 font-bengali">
-          টপিক ধরে ধরে একদম বেসিক থেকে প্রো লেভেল পর্যন্ত সাজানো ক্লাস সিরিজ
-        </p>
-      </div>
-
-      <!-- Category Filter Pills -->
-      <div class="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-brand-surface/70 border border-brand-border" id="playlistFilterBar">
-        <button onclick="filterPlaylists('all')" class="filter-btn active px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-brand-cyan text-brand-dark">সবগুলো</button>
-        <button onclick="filterPlaylists('physics')" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition">পদার্থবিজ্ঞান</button>
-        <button onclick="filterPlaylists('chemistry')" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition">রসায়ন</button>
-        <button onclick="filterPlaylists('math')" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition">উচ্চতর গণিত</button>
-        <button onclick="filterPlaylists('tricks')" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition">শর্টকাট হ্যাকস</button>
-      </div>
-    </div>
-
-    <!-- Playlists Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="playlistContainer">
-      <!-- Dynamic cards rendered by JS -->
-    </div>
-  </section>
-
-  <!-- ================= CLASS NOTES & LECTURE SHEETS HUB ================= -->
-  <section id="notes-hub" class="py-20 bg-brand-card/50 border-y border-brand-border/70 relative">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-        <div>
-          <span class="px-3 py-1 rounded-full bg-brand-amber/15 text-brand-amber text-xs font-bold uppercase tracking-wider inline-block mb-2">
-            Free PDF Library
-          </span>
-          <h2 class="text-2xl sm:text-4xl font-extrabold text-white">
-            ক্লাস নোটস ও হ্যান্ডরিটেন লেকচার শিট
-          </h2>
-          <p class="text-sm text-brand-muted mt-1 font-bengali">
-            ক্লাসের সাথে সাথে টপিক নোট সংগ্রহ করো অথবা তোমার নিজের সুন্দর নোট শেয়ার করে অন্যদের সাহায্য করো!
-          </p>
-        </div>
-
-        <div class="flex items-center gap-3">
           <button 
-            onclick="openUploadModal()" 
-            class="px-4 py-2.5 rounded-xl bg-brand-surface hover:bg-brand-border border border-brand-border text-xs font-bold text-brand-cyan flex items-center gap-2 transition"
+            onclick="openManageChaptersModal()" 
+            title="চ্যাপ্টার পরিচালনা ও নতুন যোগ করুন" 
+            class="text-white/80 hover:text-white text-sm bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-bengali text-xs"
           >
-            <i class="fa-solid fa-file-circle-plus"></i>
-            <span>নিজের নোট আপলোড করো</span>
+            <i class="fa-solid fa-plus text-xs"></i> যোগ/এডিট
+          </button>
+        </div>
+        <!-- Underline Divider as shown in screenshot -->
+        <div class="w-full h-[1.5px] bg-white/25 mt-3 mb-2"></div>
+      </div>
+
+      <!-- Quick Hint Bar -->
+      <div class="px-6 py-1.5 text-[11px] text-white/70 flex items-center justify-between">
+        <span><i class="fa-solid fa-key text-[10px] mr-1 text-amber-300"></i> ডিফল্ট পাসওয়ার্ড: <strong class="text-white bg-white/20 px-1 rounded font-mono">1234</strong></span>
+        <button onclick="resetAllLocks()" class="underline hover:text-white text-[10px]">লক রিসেট</button>
+      </div>
+
+      <!-- Chapter Cards List (Scrollable) -->
+      <div class="flex-1 overflow-y-auto px-5 py-3 space-y-3" id="chaptersListContainer">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+      <!-- Sidebar Footer User Status -->
+      <div class="p-4 bg-[#411867] border-t border-white/10 flex items-center justify-between text-xs text-white/80">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>সুরক্ষিত শিক্ষার্থী পোর্টাল</span>
+        </div>
+        <button onclick="openInstructorModal()" class="hover:text-white flex items-center gap-1 text-[11px] bg-white/10 px-2 py-1 rounded">
+          <i class="fa-solid fa-circle-question"></i> সাহায্য
+        </button>
+      </div>
+    </aside>
+
+    <!-- Overlay backdrop for mobile -->
+    <div id="sidebarBackdrop" class="fixed inset-0 bg-black/60 z-30 hidden lg:hidden"></div>
+
+    <!-- ================= 2. MAIN CONTENT AREA ================= -->
+    <main class="flex-1 bg-white overflow-y-auto flex flex-col min-w-0">
+      
+      <!-- Top Action Toolbar for Main Panel -->
+      <div class="border-b border-gray-200 px-6 sm:px-10 py-4 flex items-center justify-between bg-white sticky top-0 z-10">
+        <div class="flex items-center gap-3">
+          <span id="currentStatusBadge" class="hidden text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 items-center gap-1.5">
+            <i class="fa-solid fa-unlock-keyhole text-[11px]"></i> আনলকড চ্যাপ্টার
+          </span>
+          <span id="activeChapterSubText" class="text-xs text-gray-400">কোনো অধ্যায় খোলা নেই</span>
+        </div>
+
+        <!-- Instructor Action Buttons (Active when chapter is open) -->
+        <div id="chapterActionButtons" class="hidden flex items-center gap-2">
+          <button 
+            onclick="openAddResourceModal()" 
+            class="px-3.5 py-1.5 rounded-lg bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+          >
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span>নোট/ভিডিও যুক্ত করুন</span>
+          </button>
+          
+          <button 
+            onclick="lockCurrentChapter()" 
+            class="px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-100 text-gray-700 text-xs font-medium transition flex items-center gap-1"
+            title="এই চ্যাপ্টারটি পুনরায় লক করুন"
+          >
+            <i class="fa-solid fa-lock text-xs text-red-500"></i>
+            <span class="hidden sm:inline">লক করুন</span>
           </button>
         </div>
       </div>
 
-      <!-- Notes Search and Filter Tabs -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
-        <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0" id="notesFilterBar">
-          <button onclick="filterNotes('all')" class="note-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-amber text-brand-dark">সব নোট</button>
-          <button onclick="filterNotes('physics')" class="note-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:bg-brand-surface">পদার্থবিজ্ঞান</button>
-          <button onclick="filterNotes('chemistry')" class="note-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:bg-brand-surface">রসায়ন</button>
-          <button onclick="filterNotes('math')" class="note-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:bg-brand-surface">উচ্চতর গণিত</button>
-          <button onclick="filterNotes('formula')" class="note-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:bg-brand-surface">সূত্র ব্যাংক</button>
-        </div>
+      <!-- Main Container -->
+      <div class="p-6 sm:p-10 flex-1 flex flex-col">
 
-        <div class="w-full sm:w-64">
-          <input 
-            type="text" 
-            id="noteSearchInput" 
-            placeholder="নোট বা টপিকের নাম দিয়ে খুঁজুন..." 
-            class="w-full bg-brand-surface border border-brand-border rounded-xl px-4 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-brand-amber"
-          >
-        </div>
-      </div>
+        <!-- INITIAL STATE: "একটি অধ্যায় নির্বাচন করুন" (EXACT REPLICATION OF SCREENSHOT 1) -->
+        <div id="emptyStateView" class="block">
+          <h2 class="text-3xl sm:text-[34px] font-bold text-[#52217e] font-bengali leading-snug">
+            একটি অধ্যায় নির্বাচন করুন
+          </h2>
+          <!-- Subtle bottom divider exactly as shown in screenshot -->
+          <div class="w-full h-[1.5px] bg-[#e2e8f0] mt-4 mb-8"></div>
 
-      <!-- Notes Grid Container -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="notesContainer">
-        <!-- Rendered via JS -->
-      </div>
-
-      <!-- Bottom Note Encouragement -->
-      <div class="mt-12 p-6 rounded-2xl bg-gradient-to-r from-brand-surface via-brand-card to-indigo-950/60 border border-brand-border flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="flex items-center gap-4">
-          <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-brand-amber flex items-center justify-center text-2xl flex-shrink-0">
-            <i class="fa-solid fa-trophy"></i>
-          </div>
-          <div>
-            <h4 class="text-base font-bold text-white">তুমি কি সুন্দর ও সাজানো ক্লাস নোট তোলো?</h4>
-            <p class="text-xs text-brand-muted mt-0.5">Edu Marathon কমিউনিটিতে সেরা নোট অবদানকারী প্রতি মাসে পাচ্ছেন আকর্ষণীয় বুয়েট কোয়েশ্চেন ব্যাংক গিফট বক্স!</p>
-          </div>
-        </div>
-        <button onclick="openUploadModal()" class="px-5 py-2.5 rounded-xl bg-brand-amber hover:bg-amber-400 text-brand-dark font-extrabold text-xs shadow-md glow-amber flex-shrink-0">
-          নোট শেয়ার করো এখনই
-        </button>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= FORMULA BANK & SHORTCUT HUB ================= -->
-  <section id="formula-bank" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center max-w-2xl mx-auto mb-12">
-      <span class="text-xs font-bold text-brand-rose tracking-wider uppercase">Quick Revision Vault</span>
-      <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-1">এডমিশন ফর্মুলা ও শর্টকাট ব্যাংক</h2>
-      <p class="text-sm text-brand-muted mt-2 font-bengali">পরীক্ষার ঠিক আগের রাতে শেষ মুহূর্তের চোখ বুলিয়ে নেওয়ার জন্য তৈরি ইন্টারেক্টিভ চিটশিট</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      
-      <!-- Physics Sheet Accordion/Card -->
-      <div class="rounded-2xl bg-brand-card border border-brand-border p-6 hover:border-brand-cyan/50 transition">
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-brand-cyan flex items-center justify-center text-lg font-bold">
-            <i class="fa-solid fa-atom"></i>
-          </div>
-          <span class="text-[11px] font-bold text-brand-cyan uppercase bg-brand-cyan/10 px-2.5 py-1 rounded-full">পদার্থবিজ্ঞান ১ম ও ২য়</span>
-        </div>
-        <h3 class="text-lg font-bold text-white mb-2">ক্যালোরিমিতি ও বিদ্যুৎ তাপীয় ফল</h3>
-        <p class="text-xs text-brand-muted mb-4 font-bengali">হিটার ক্ষমতা, পানির স্ফুটনাঙ্ক ও ঋতুভিত্তিক সময় পার্থক্যের সরাসরি ফর্মুলা:</p>
-        
-        <div class="p-3.5 rounded-xl bg-brand-surface font-mono text-xs text-brand-cyan border border-brand-border/60 mb-4 space-y-1">
-          <div class="text-slate-300">// 1-Line Admission Hack:</div>
-          <div class="text-emerald-400 font-bold">m · s · Δθ = P · Δt</div>
-          <div class="text-[11px] text-slate-400">Δθ = (P × Δt) / (m × s)</div>
-        </div>
-
-        <button onclick="previewNote('physics_formula_all')" class="w-full py-2 rounded-xl bg-brand-surface hover:bg-brand-border text-xs font-bold text-white border border-brand-border transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-eye text-brand-cyan"></i> ফুল ফর্মুলা শিট প্রিভিউ
-        </button>
-      </div>
-
-      <!-- Chemistry Sheet Card -->
-      <div class="rounded-2xl bg-brand-card border border-brand-border p-6 hover:border-brand-amber/50 transition">
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-brand-amber flex items-center justify-center text-lg font-bold">
-            <i class="fa-solid fa-flask"></i>
-          </div>
-          <span class="text-[11px] font-bold text-brand-amber uppercase bg-brand-amber/10 px-2.5 py-1 rounded-full">পরিমাণগত রসায়ন</span>
-        </div>
-        <h3 class="text-lg font-bold text-white mb-2">জারণ-বিজারণ ও টাইট্রেশন</h3>
-        <p class="text-xs text-brand-muted mb-4 font-bengali">মোলারিটি, পার্সেন্টেজ কনসেন্ট্রেশন ও ইকুইভ্যালেন্ট পয়েন্ট গণনা:</p>
-        
-        <div class="p-3.5 rounded-xl bg-brand-surface font-mono text-xs text-brand-amber border border-brand-border/60 mb-4 space-y-1">
-          <div class="text-slate-300">// Redox Equivalent:</div>
-          <div class="text-amber-400 font-bold">e₁ · V₁ · S₁ = e₂ · V₂ · S₂</div>
-          <div class="text-[11px] text-slate-400">KMnO₄: e=5 (অম্লীয় মাধ্যম)</div>
-        </div>
-
-        <button onclick="previewNote('chem_redox_01')" class="w-full py-2 rounded-xl bg-brand-surface hover:bg-brand-border text-xs font-bold text-white border border-brand-border transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-eye text-brand-amber"></i> ফুল ফর্মুলা শিট প্রিভিউ
-        </button>
-      </div>
-
-      <!-- Math Sheet Card -->
-      <div class="rounded-2xl bg-brand-card border border-brand-border p-6 hover:border-emerald-400/50 transition">
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg font-bold">
-            <i class="fa-solid fa-infinity"></i>
-          </div>
-          <span class="text-[11px] font-bold text-emerald-400 uppercase bg-emerald-400/10 px-2.5 py-1 rounded-full">উচ্চতর গণিত</span>
-        </div>
-        <h3 class="text-lg font-bold text-white mb-2">ক্যালকুলাস: ইন্টিগ্রেশন ট্রিকস</h3>
-        <p class="text-xs text-brand-muted mb-4 font-bengali">স্ট্যান্ডার্ড ইন্টিগ্রালের ৫টি সুপার শর্টকাট যা ক্যালকুলেটর ছাড়াই সমাধান দেয়:</p>
-        
-        <div class="p-3.5 rounded-xl bg-brand-surface font-mono text-xs text-emerald-400 border border-brand-border/60 mb-4 space-y-1">
-          <div class="text-slate-300">// Area under Parabola & Line:</div>
-          <div class="text-emerald-300 font-bold">Area = (8/3) · (a² / m³)</div>
-          <div class="text-[11px] text-slate-400">y² = 4ax এবং y = mx এর জন্য</div>
-        </div>
-
-        <button onclick="previewNote('math_calculus_01')" class="w-full py-2 rounded-xl bg-brand-surface hover:bg-brand-border text-xs font-bold text-white border border-brand-border transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-eye text-emerald-400"></i> ফুল ফর্মুলা শিট প্রিভিউ
-        </button>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= INTERACTIVE MARATHON QUIZ WIDGET ================= -->
-  <section id="quiz-zone" class="py-16 bg-brand-surface/40 border-y border-brand-border">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6">
-      
-      <div class="p-6 sm:p-8 rounded-3xl bg-brand-card border border-brand-border shadow-2xl relative">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-brand-border pb-5 mb-6">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">
-              <i class="fa-solid fa-stopwatch-20"></i>
-            </div>
-            <div>
-              <h3 class="text-lg font-bold text-white">ডেইলি স্পিড কুইজ ম্যারাথন</h3>
-              <p class="text-xs text-brand-muted">৩টি ট্রিকি প্রশ্ন • নিজেকে যাচাই করো ইনস্ট্যান্টলি</p>
+          <!-- Helpful empty-state guidance -->
+          <div class="max-w-xl text-gray-500 text-sm sm:text-base leading-relaxed space-y-4 font-bengali">
+            <p>
+              বাম পাশের তালিকা থেকে যেকোনো অধ্যায়ের ওপর ক্লিক করুন। প্রতিটি অধ্যায় দেখার জন্য নির্ধারিত পাসওয়ার্ড প্রয়োজন হবে।
+            </p>
+            <div class="p-4 rounded-xl bg-purple-50/70 border border-purple-200 text-purple-900 text-xs sm:text-sm space-y-2">
+              <div class="font-bold flex items-center gap-2 text-purple-800">
+                <i class="fa-solid fa-shield-halved text-base"></i> সিকিউরিটি ও পাসওয়ার্ড তথ্য:
+              </div>
+              <p>সকল অধ্যায়ের ডিফল্ট পাসওয়ার্ড: <strong class="bg-white px-2 py-0.5 rounded border border-purple-300 font-mono text-purple-950 font-bold">1234</strong></p>
+              <p class="text-[12px] text-purple-700">আপনি উপরের <strong>যোগ/এডিট</strong> বাটন ব্যবহার করে যেকোনো অধ্যায়ের নাম পরিবর্তন করতে এবং নিজস্ব পাসওয়ার্ড সেট করতে পারবেন।</p>
             </div>
           </div>
-          <div class="flex items-center gap-2 text-xs font-mono bg-brand-dark px-3 py-1.5 rounded-full border border-brand-border">
-            <span class="text-brand-muted">স্কোর:</span>
-            <span id="quizScore" class="font-bold text-brand-cyan">০/৩</span>
-          </div>
         </div>
 
-        <!-- Quiz Container -->
-        <div id="quizContainer">
-          <div id="quizQuestionBox" class="space-y-4">
-            <!-- Dynamic quiz question injected here -->
-          </div>
-
-          <div id="quizExplanation" class="hidden mt-4 p-4 rounded-xl bg-brand-surface border border-brand-border text-xs leading-relaxed">
-            <!-- Explanation injected -->
-          </div>
-
-          <div class="mt-6 flex justify-between items-center pt-4 border-t border-brand-border/60">
-            <span id="quizStepText" class="text-xs text-brand-muted">প্রশ্ন ১ এর ৩</span>
-            <button id="nextQuizBtn" onclick="nextQuizQuestion()" class="px-5 py-2 rounded-xl bg-brand-cyan text-brand-dark font-bold text-xs hover:brightness-110 transition hidden">
-              পরবর্তী প্রশ্ন →
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= ABOUT EDU MARATHON & PHILOSOPHY ================= -->
-  <section id="about" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-      
-      <div class="lg:col-span-6 space-y-5">
-        <span class="text-xs font-bold uppercase tracking-wider text-brand-cyan">Why Edu Marathon?</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
-          আমরা বিশ্বাস করি—সঠিক টেকনিক জানা থাকলে পড়াশোনা কোনো চাপ নয়!
-        </h2>
-        <p class="text-slate-300 text-sm leading-relaxed font-bengali">
-          বাংলাদেশের হাজার হাজার মেধাবী শিক্ষার্থী শুধুমাত্র সঠিক দিকনির্দেশনা ও রুট লেভেল কনসেপ্টের অভাবে ভর্তি পরীক্ষায় কাঙ্ক্ষিত ফলাফল পায় না। 
-          <strong>Edu Marathon</strong> ইউটিউব চ্যানেলের জন্ম এই শূন্যতা পূরণের উদ্দেশ্যেই।
-        </p>
-        <div class="space-y-3 pt-2">
-          <div class="flex items-start gap-3">
-            <i class="fa-solid fa-circle-check text-brand-cyan mt-1"></i>
-            <p class="text-xs text-slate-300"><strong class="text-white">জিরো বোরিং থিওরি:</strong> প্রতিটি জটিল সূত্রকে অ্যানিমেটেড ডায়গ্রাম ও বাস্তব জীবনের উদাহরণের মাধ্যমে উপস্থাপন।</p>
-          </div>
-          <div class="flex items-start gap-3">
-            <i class="fa-solid fa-circle-check text-brand-amber mt-1"></i>
-            <p class="text-xs text-slate-300"><strong class="text-white">ওপেন রিসোর্স পলিসি:</strong> আমাদের সমস্ত লেকচার শিট, হ্যান্ডরিটেন নোটস ও প্র্যাকটিস শিট সম্পূর্ণ ফ্রি।</p>
-          </div>
-          <div class="flex items-start gap-3">
-            <i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i>
-            <p class="text-xs text-slate-300"><strong class="text-white">স্টুডেন্ট-লেড কমিউনিটি:</strong> শিক্ষার্থীরা নিজেরাও তাদের সেরা নোটস আপলোড করে পারস্পরিক সহযোগিতা করতে পারে।</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="lg:col-span-6">
-        <div class="p-6 rounded-3xl bg-brand-card border border-brand-border space-y-6">
-          <h3 class="text-lg font-bold text-white border-b border-brand-border pb-3 flex items-center justify-between">
-            <span>ফাউন্ডার ও মেন্টর টিম</span>
-            <span class="text-xs font-normal text-brand-muted">BUET & DU Alumni</span>
-          </h3>
+        <!-- UNLOCKED CHAPTER CONTENT VIEW -->
+        <div id="unlockedContentView" class="hidden flex-1 flex flex-col space-y-6">
           
-          <div class="space-y-4">
-            <div class="flex items-center gap-4 p-3 rounded-2xl bg-brand-surface/60 border border-brand-border/60">
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg">
-                TA
-              </div>
+          <!-- Chapter Banner Header -->
+          <div class="border-b border-gray-200 pb-5">
+            <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h4 class="text-sm font-bold text-white">তানভীর আহমেদ</h4>
-                <p class="text-xs text-brand-cyan">চিফ ফিজিক্স মেন্টর • BUET '20 (EEE)</p>
-                <p class="text-[11px] text-slate-400 mt-0.5">৫+ বছরের এডমিশন কোচিং অভিজ্ঞতা</p>
+                <span id="chapterPaperBadge" class="text-xs uppercase font-bold tracking-wider px-2.5 py-0.5 rounded bg-purple-100 text-purple-800 font-sans">
+                  HSC Chemistry
+                </span>
+                <h2 id="chapterDisplayTitle" class="text-2xl sm:text-3xl font-extrabold text-gray-900 font-bengali mt-2">
+                  <!-- Injected Title -->
+                </h2>
               </div>
-            </div>
 
-            <div class="flex items-center gap-4 p-3 rounded-2xl bg-brand-surface/60 border border-brand-border/60">
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center text-white font-bold text-lg">
-                SR
-              </div>
-              <div>
-                <h4 class="text-sm font-bold text-white">সুমাইয়া রহমান</h4>
-                <p class="text-xs text-brand-amber">কেমিস্ট্রি ও বায়োলজি মেন্টর • DMC '21</p>
-                <p class="text-[11px] text-slate-400 mt-0.5">মেডিকেল ভর্তি প্রস্তুতি স্পেশালিস্ট</p>
+              <!-- Quick Stats -->
+              <div class="flex items-center gap-4 text-xs text-gray-500 font-bengali">
+                <span id="statNotesCount"><i class="fa-regular fa-file-pdf text-red-500 mr-1"></i> ০টি নোটস</span>
+                <span id="statVideosCount"><i class="fa-brands fa-youtube text-red-600 mr-1"></i> ০টি ভিডিও</span>
+                <span id="statPhotosCount"><i class="fa-regular fa-image text-emerald-500 mr-1"></i> ০টি ডায়াগ্রাম</span>
               </div>
             </div>
           </div>
 
-          <div class="p-4 rounded-2xl bg-brand-dark/70 border border-brand-border flex items-center justify-between">
-            <div>
-              <p class="text-xs text-slate-300 font-bold">আমাদের টেলিগ্রাম গ্রুপে যুক্ত আছো তো?</p>
-              <p class="text-[11px] text-brand-muted">প্রতিদিনের লেকচার আপডেট ও প্রব্লেম ডিসকাশন</p>
-            </div>
-            <a href="https://t.me" target="_blank" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs flex items-center gap-1.5 transition">
-              <i class="fa-brands fa-telegram"></i> জয়েন নাও
-            </a>
+          <!-- Category Filters for Chapter Materials -->
+          <div class="flex items-center gap-2 border-b border-gray-200 pb-2 overflow-x-auto text-xs font-semibold">
+            <button onclick="filterResources('all')" class="res-filter-btn px-4 py-2 rounded-lg bg-[#52217e] text-white">সকল রিসোর্স</button>
+            <button onclick="filterResources('note')" class="res-filter-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">হ্যান্ডরিটেন নোটস & লেকচার শিট</button>
+            <button onclick="filterResources('video')" class="res-filter-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">ভিডিও ক্লাস ও সলিউশন</button>
+            <button onclick="filterResources('photo')" class="res-filter-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">ছবি ও বিক্রিয়ার চার্ট</button>
           </div>
+
+          <!-- Resources Grid -->
+          <div id="resourcesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pt-2">
+            <!-- Dynamic resources injected here -->
+          </div>
+
+          <!-- When Chapter has no items yet -->
+          <div id="emptyResourcesNotice" class="hidden text-center py-16 text-gray-400 font-bengali">
+            <i class="fa-regular fa-folder-open text-4xl mb-3 text-gray-300"></i>
+            <p class="text-base text-gray-600 font-bold">এই অধ্যায়ে এখনও কোনো উপাদান যোগ করা হয়নি!</p>
+            <p class="text-xs text-gray-400 mt-1">উপরের "নোট/ভিডিও যুক্ত করুন" বাটনে ক্লিক করে নতুন শিট বা ভিডিও যুক্ত করুন।</p>
+          </div>
+
         </div>
+
       </div>
 
-    </div>
-  </section>
+    </main>
 
-  <!-- ================= YOUTUBE COMMUNITY CTA ================= -->
-  <section class="py-16 bg-gradient-to-b from-brand-dark via-brand-card to-brand-dark border-t border-brand-border/70 relative">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <div class="w-16 h-16 rounded-3xl bg-red-600/20 text-red-500 flex items-center justify-center text-3xl mx-auto mb-5 border border-red-500/30">
-        <i class="fa-brands fa-youtube"></i>
-      </div>
-      <h2 class="text-3xl sm:text-4xl font-black text-white">
-        Edu Marathon পরিবারের অংশ হও আজই!
-      </h2>
-      <p class="text-slate-300 text-sm max-w-xl mx-auto mt-2 font-bengali">
-        নিয়মিত ফুল চ্যাপ্টার ম্যারাথন ক্লাস, সাজেকশন ভিডিও ও লাইভ সলভিং সেশন পেতে চ্যানেলটি সাবস্ক্রাইব করে বেল বাটন বাজিয়ে রাখো।
-      </p>
-      
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-        <a href="https://youtube.com" target="_blank" class="px-8 py-3.5 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm flex items-center gap-2 shadow-xl shadow-red-600/30 transition active:scale-95">
-          <i class="fa-brands fa-youtube text-lg"></i>
-          <span>ইউটিউবে সাবস্ক্রাইব করুন</span>
-        </a>
-        <a href="https://facebook.com" target="_blank" class="px-8 py-3.5 rounded-full bg-brand-surface hover:bg-brand-border border border-brand-border text-white font-bold text-sm flex items-center gap-2 transition active:scale-95">
-          <i class="fa-brands fa-facebook text-blue-400 text-lg"></i>
-          <span>ফেসবুক গ্রুপে যোগ দিন</span>
-        </a>
-      </div>
-    </div>
-  </section>
+  </div>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="mt-auto bg-brand-dark border-t border-brand-border/80 pt-12 pb-8 text-xs text-brand-muted">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+  <!-- ================= 3. PASSWORD MODAL (EXACT REPLICATION OF SCREENSHOT 2) ================= -->
+  <div 
+    id="passwordModal" 
+    class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/45 backdrop-blur-[1px] transition-opacity"
+  >
+    <!-- Exact modal box as in the second screenshot -->
+    <div 
+      id="passwordModalCard"
+      class="bg-white rounded-[26px] w-full max-w-[500px] overflow-hidden prompt-box-shadow border border-gray-200/80 transition-all duration-200 transform scale-95"
+    >
+      <div class="p-6 sm:p-7">
         
-        <div class="space-y-3">
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-lg bg-brand-cyan text-brand-dark flex items-center justify-center font-bold">
-              <i class="fa-solid fa-bolt"></i>
-            </div>
-            <span class="text-base font-extrabold text-white">Edu<span class="text-brand-cyan">Marathon</span></span>
-          </div>
-          <p class="text-xs text-slate-400 leading-relaxed font-bengali">
-            বাংলাদেশের শিক্ষার্থীদের জন্য ফ্রি, মানসম্মত এবং গভীর কনসেপ্ট-নির্ভর অনলাইন শিক্ষার ঠিকানা।
-          </p>
+        <!-- Label in Bengali: এই অধ্যায়টি দেখতে পাসওয়ার্ড দিন: -->
+        <label for="passwordInputField" class="block text-gray-700 text-sm sm:text-[15px] font-medium font-bengali mb-4 select-none">
+          এই অধ্যায়টি দেখতে পাসওয়ার্ড দিন:
+        </label>
+
+        <!-- Input Box with blue outline as shown in the screenshot -->
+        <div class="relative">
+          <input 
+            type="password" 
+            id="passwordInputField" 
+            class="w-full px-3 py-2 sm:py-2.5 text-sm sm:text-base border border-[#2b72d7] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-[#2b72d7]/50 text-gray-900 bg-white"
+            autocomplete="off"
+            placeholder=""
+          >
+          <button 
+            type="button" 
+            onclick="togglePasswordVisibility()" 
+            class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-700 text-xs"
+            title="Show/Hide"
+          >
+            <i id="pwdToggleIcon" class="fa-regular fa-eye"></i>
+          </button>
         </div>
 
-        <div>
-          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">দ্রুত লিংক</h4>
-          <ul class="space-y-2">
-            <li><a href="#playlists" class="hover:text-brand-cyan">প্লেলিস্ট তালিকা</a></li>
-            <li><a href="#notes-hub" class="hover:text-brand-cyan">লেকচার নোটস লাইব্রেরি</a></li>
-            <li><a href="#formula-bank" class="hover:text-brand-cyan">এডমিশন ফর্মুলা শিট</a></li>
-            <li><a href="#quiz-zone" class="hover:text-brand-cyan">অনলাইন কুইজ</a></li>
-          </ul>
+        <!-- Inline Error Message -->
+        <div id="passwordErrorMsg" class="hidden mt-2 text-xs font-semibold text-red-600 flex items-center gap-1 font-bengali">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span>ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে আবার চেষ্টা করুন।</span>
         </div>
 
-        <div>
-          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">কোর্স বিভাগ</h4>
-          <ul class="space-y-2">
-            <li><a href="#playlists" class="hover:text-brand-cyan">HSC Physics 1st & 2nd</a></li>
-            <li><a href="#playlists" class="hover:text-brand-cyan">BUET Engineering Special</a></li>
-            <li><a href="#playlists" class="hover:text-brand-cyan">Medical Chemistry Sprint</a></li>
-            <li><a href="#playlists" class="hover:text-brand-cyan">Higher Math Shortcuts</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">যোগাযোগ ও সোশ্যাল</h4>
-          <p class="text-[11px] text-slate-400 mb-3">কোনো প্রশ্ন বা সহায়তার জন্য আমাদের ইমেইল করতে পারো:</p>
-          <p class="text-slate-200 font-mono text-xs mb-3">support@edumarathon.bd</p>
-          <div class="flex items-center gap-3 text-sm">
-            <a href="https://youtube.com" class="w-8 h-8 rounded-lg bg-brand-surface border border-brand-border flex items-center justify-center text-slate-300 hover:text-red-500 hover:border-red-500/50 transition"><i class="fa-brands fa-youtube"></i></a>
-            <a href="https://facebook.com" class="w-8 h-8 rounded-lg bg-brand-surface border border-brand-border flex items-center justify-center text-slate-300 hover:text-blue-500 hover:border-blue-500/50 transition"><i class="fa-brands fa-facebook"></i></a>
-            <a href="https://t.me" class="w-8 h-8 rounded-lg bg-brand-surface border border-brand-border flex items-center justify-center text-slate-300 hover:text-sky-400 hover:border-sky-400/50 transition"><i class="fa-brands fa-telegram"></i></a>
-          </div>
+        <!-- Password Hint -->
+        <div class="mt-2 flex items-center justify-between text-[11px] text-gray-400">
+          <span>পাসওয়ার্ড জানেন না? ডিফল্ট: <strong class="text-gray-600 font-mono">1234</strong></span>
         </div>
 
       </div>
 
-      <div class="border-t border-brand-border/60 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p>© 2026 Edu Marathon. সর্বস্বত্ব সংরক্ষিত। দেশজুড়ে সকল স্বপ্নবাজ শিক্ষার্থীর জন্য নিবেদিত।</p>
-        <p class="text-slate-500">Made with ⚡ for Bangladeshi Learners</p>
+      <!-- Action Buttons Row: Cancel and OK in right side as shown in screenshot -->
+      <div class="px-6 py-3.5 bg-white border-t border-gray-100 flex items-center justify-end gap-5">
+        <button 
+          type="button" 
+          onclick="closePasswordModal()" 
+          class="text-[#1973e8] hover:text-[#1557b0] font-medium text-sm sm:text-[15px] px-2 py-1 transition rounded font-sans focus:outline-none"
+        >
+          Cancel
+        </button>
+        
+        <button 
+          type="button" 
+          id="submitPasswordBtn" 
+          onclick="validatePasswordSubmission()" 
+          class="text-[#1973e8] hover:text-[#1557b0] font-semibold text-sm sm:text-[15px] px-3 py-1 transition rounded font-sans focus:outline-none"
+        >
+          OK
+        </button>
       </div>
+
     </div>
-  </footer>
+  </div>
 
-  <!-- ================= MODAL: NOTE UPLOAD SIMULATOR ================= -->
-  <div id="uploadModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-    <div class="bg-brand-card border border-brand-border rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
+  <!-- ================= 4. ADD / EDIT RESOURCE MODAL ================= -->
+  <div id="addResourceModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl border border-gray-200">
       
-      <div class="p-6 border-b border-brand-border flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-brand-cyan/20 text-brand-cyan flex items-center justify-center">
-            <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
-          </div>
-          <div>
-            <h3 class="text-base font-bold text-white">ক্লাস নোট আপলোড করুন</h3>
-            <p class="text-xs text-brand-muted">Edu Marathon লাইব্রেরিতে আপনার অবদান যুক্ত করুন</p>
-          </div>
-        </div>
-        <button onclick="closeUploadModal()" class="text-slate-400 hover:text-white text-lg p-1">
+      <div class="bg-[#52217e] text-white px-6 py-4 flex items-center justify-between">
+        <h3 class="text-base font-bold font-bengali flex items-center gap-2">
+          <i class="fa-solid fa-file-circle-plus"></i> অধ্যায়ে নতুন রিসোর্স যুক্ত করুন
+        </h3>
+        <button onclick="closeAddResourceModal()" class="text-white/70 hover:text-white text-lg">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <form id="noteUploadForm" onsubmit="handleNoteUpload(event)" class="p-6 space-y-4">
-        
+      <form id="resourceForm" onsubmit="handleResourceSubmit(event)" class="p-6 space-y-4 font-bengali text-xs">
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">নোট বা লেকচারের শিরোনাম *</label>
-          <input 
-            type="text" 
-            id="modalNoteTitle" 
-            required 
-            placeholder="উদা: তাপগতিবিদ্যা পূর্ণাঙ্গ সূত্র ও শর্টকাট শিট" 
-            class="w-full bg-brand-surface border border-brand-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-cyan"
-          >
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">বিষয় *</label>
-            <select 
-              id="modalNoteSubject" 
-              class="w-full bg-brand-surface border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-brand-cyan"
-            >
-              <option value="physics">পদার্থবিজ্ঞান (Physics)</option>
-              <option value="chemistry">রসায়ন (Chemistry)</option>
-              <option value="math">উচ্চতর গণিত (Higher Math)</option>
-              <option value="formula">ফর্মুলা ও শর্টকাট</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">পৃষ্ঠা সংখ্যা</label>
-            <input 
-              type="number" 
-              id="modalNotePages" 
-              value="4" 
-              min="1" 
-              max="50" 
-              class="w-full bg-brand-surface border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-brand-cyan"
-            >
-          </div>
+          <label class="block font-semibold text-gray-700 mb-1">রিসোর্সের ধরন *</label>
+          <select id="resType" class="w-full border border-gray-300 rounded-lg p-2.5 text-xs text-gray-800 focus:outline-none focus:border-purple-600" onchange="toggleResourceInputTypes()">
+            <option value="note">হ্যান্ডরিটেন নোট / PDF শিট</option>
+            <option value="video">ইউটিউব ক্লাস ভিডিও (YouTube Embed)</option>
+            <option value="photo">ডায়াগ্রাম / ছবি / হ্যান্ডনোট ইমেজ</option>
+          </select>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">আপনার নাম / ব্যাচ</label>
-          <input 
-            type="text" 
-            id="modalNoteAuthor" 
-            placeholder="উদা: সাজিদ করিম (HSC '25 / NDC)" 
-            class="w-full bg-brand-surface border border-brand-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-cyan"
-          >
+          <label class="block font-semibold text-gray-700 mb-1">শিরোনাম বা টপিকের নাম *</label>
+          <input type="text" id="resTitle" required placeholder="উদা: বোরের পরমাণু মডেল ও কোয়ান্টাম সংখ্যা হ্যান্ডনোট" class="w-full border border-gray-300 rounded-lg p-2.5 text-xs focus:outline-none focus:border-purple-600">
         </div>
 
-        <!-- Drag & Drop Zone -->
+        <div id="resUrlGroup">
+          <label class="block font-semibold text-gray-700 mb-1" id="resUrlLabel">PDF লিংক অথবা ড্রাইভ URL *</label>
+          <input type="text" id="resUrl" placeholder="https://..." class="w-full border border-gray-300 rounded-lg p-2.5 text-xs focus:outline-none focus:border-purple-600">
+        </div>
+
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">পিডিএফ ফাইল সংযুক্ত করুন</label>
-          <div class="border-2 border-dashed border-brand-border hover:border-brand-cyan/60 rounded-2xl p-6 text-center cursor-pointer bg-brand-surface/50 transition">
-            <i class="fa-solid fa-file-pdf text-3xl text-brand-amber mb-2"></i>
-            <p class="text-xs font-medium text-slate-300">ক্লিক করে PDF সিলেক্ট করুন অথবা ড্র্যাগ করুন</p>
-            <p class="text-[10px] text-slate-500 mt-1">সর্বোচ্চ ফাইল সাইজ: ২৫ MB</p>
-          </div>
+          <label class="block font-semibold text-gray-700 mb-1">সংক্ষিপ্ত বিবরণ বা মূল সূত্র</label>
+          <textarea id="resDescription" rows="2" placeholder="সংক্ষিপ্ত বিবরণ বা পরীক্ষার গুরুত্বপূর্ণ টিপস লিখুন..." class="w-full border border-gray-300 rounded-lg p-2.5 text-xs focus:outline-none focus:border-purple-600"></textarea>
         </div>
 
-        <div class="pt-2">
-          <button type="submit" class="w-full py-3 rounded-xl bg-brand-cyan hover:bg-brand-cyanHover text-brand-dark font-extrabold text-xs shadow-lg glow-cyan transition">
-            আপলোড নিশ্চিত করুন
-          </button>
+        <div class="pt-2 flex items-center justify-end gap-3 border-t border-gray-100">
+          <button type="button" onclick="closeAddResourceModal()" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium">বাতিল</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-[#52217e] hover:bg-purple-800 text-white font-bold shadow-md">যুক্ত করুন</button>
         </div>
-
       </form>
     </div>
   </div>
 
-  <!-- ================= MODAL: NOTE PREVIEWER ================= -->
-  <div id="previewModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
-    <div class="bg-brand-card border border-brand-border rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+  <!-- ================= 5. MANAGE CHAPTERS & PASSWORDS MODAL ================= -->
+  <div id="manageChaptersModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl border border-gray-200 flex flex-col max-h-[90vh]">
       
-      <!-- Preview Header -->
-      <div class="p-5 border-b border-brand-border flex items-center justify-between bg-brand-surface/70">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-brand-amber/20 text-brand-amber flex items-center justify-center font-bold">
-            <i class="fa-regular fa-file-pdf"></i>
-          </div>
-          <div>
-            <h3 id="previewTitle" class="text-sm font-bold text-white">নোট প্রিভিউ</h3>
-            <p id="previewMeta" class="text-[11px] text-brand-muted">Edu Marathon Verified Note</p>
-          </div>
-        </div>
-        <button onclick="closePreviewModal()" class="text-slate-400 hover:text-white text-lg p-1">
+      <div class="bg-[#52217e] text-white px-6 py-4 flex items-center justify-between">
+        <h3 class="text-base font-bold font-bengali flex items-center gap-2">
+          <i class="fa-solid fa-list-check"></i> অধ্যায়সমূহ ও পাসওয়ার্ড সেটিংস
+        </h3>
+        <button onclick="closeManageChaptersModal()" class="text-white/70 hover:text-white text-lg">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <!-- Preview Body (Interactive Paper Sheet Effect) -->
-      <div class="p-6 overflow-y-auto flex-1 bg-slate-950 font-sans space-y-4" id="previewContent">
-        <!-- Injected via JS -->
+      <div class="p-6 overflow-y-auto flex-1 space-y-5 font-bengali text-xs">
+        
+        <!-- Add New Chapter Card -->
+        <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-3">
+          <h4 class="font-bold text-purple-900 text-sm flex items-center gap-1.5">
+            <i class="fa-solid fa-folder-plus text-purple-700"></i> নতুন অধ্যায় তৈরি করুন
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-gray-700 font-semibold mb-1">অধ্যায়ের নাম</label>
+              <input type="text" id="newChapterName" placeholder="উদা: 2nd Paper Chapter 3 তড়িৎ রসায়ন" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:outline-none focus:border-purple-600">
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-1">নির্ধারিত পাসওয়ার্ড</label>
+              <input type="text" id="newChapterPassword" placeholder="উদা: 1234 বা chem2026" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:outline-none focus:border-purple-600">
+            </div>
+          </div>
+          <button onclick="addNewChapter()" class="w-full py-2 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-lg transition shadow-sm">
+            তালিকায় অধ্যায় যুক্ত করুন
+          </button>
+        </div>
+
+        <!-- Existing Chapter Passwords Table -->
+        <div>
+          <h4 class="font-bold text-gray-800 mb-2">বর্তমান অধ্যায়সমূহ ও সংরক্ষিত পাসওয়ার্ড:</h4>
+          <div class="divide-y divide-gray-200 border border-gray-200 rounded-xl overflow-hidden max-h-60 overflow-y-auto" id="chaptersPasswordManagerList">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
       </div>
 
-      <!-- Preview Footer -->
-      <div class="p-4 border-t border-brand-border bg-brand-card flex items-center justify-between">
-        <span class="text-xs text-slate-400">পিডিএফ সাইজ: ~১.৮ MB</span>
-        <button onclick="simulateDownload()" class="px-5 py-2 rounded-xl bg-brand-amber hover:bg-amber-400 text-brand-dark font-bold text-xs flex items-center gap-2 shadow-md">
-          <i class="fa-solid fa-download"></i>
-          <span>ডাউনলোড করুন (PDF)</span>
+      <div class="p-4 bg-gray-50 border-t border-gray-200 text-right">
+        <button onclick="closeManageChaptersModal()" class="px-5 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg text-xs font-bold font-bengali">
+          সম্পন্ন
         </button>
       </div>
 
     </div>
   </div>
 
-  <!-- ================= MODAL: VIDEO PLAYER ================= -->
-  <div id="videoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
-    <div class="bg-brand-card border border-brand-border rounded-3xl w-full max-w-3xl overflow-hidden shadow-2xl">
-      <div class="p-4 border-b border-brand-border flex items-center justify-between">
-        <h3 id="videoModalTitle" class="text-sm font-bold text-white truncate max-w-md">ভিডিও প্লেয়ার</h3>
-        <button onclick="closeVideoModal()" class="text-slate-400 hover:text-white text-lg p-1">
+  <!-- Resource Lightbox Previewer (PDF / Video / Image) -->
+  <div id="mediaViewerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div class="bg-gray-900 rounded-2xl w-full max-w-4xl overflow-hidden shadow-2xl border border-gray-700 flex flex-col">
+      <div class="p-4 border-b border-gray-800 flex items-center justify-between text-white">
+        <h4 id="viewerTitle" class="text-sm font-bold truncate">রিসোর্স প্রিভিউ</h4>
+        <button onclick="closeMediaViewer()" class="text-gray-400 hover:text-white text-lg">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-
-      <!-- Video Aspect Ratio Frame with Simulated Player -->
-      <div class="relative aspect-video bg-black flex items-center justify-center">
-        <!-- Interactive simulated YouTube player screen -->
-        <div id="simulatedVideoFrame" class="w-full h-full bg-slate-950 flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
-          <div class="w-16 h-16 rounded-full bg-red-600/90 text-white flex items-center justify-center text-2xl shadow-xl animate-pulse">
-            <i class="fa-brands fa-youtube"></i>
-          </div>
-          <p id="videoInnerTitle" class="mt-4 text-base font-bold text-white max-w-md">লেকচার শুরু হচ্ছে...</p>
-          <p class="text-xs text-slate-400 mt-1">Edu Marathon HD 1080p Stream</p>
-          
-          <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between bg-black/60 backdrop-blur p-2.5 rounded-xl border border-white/10 text-xs">
-            <span class="text-brand-cyan"><i class="fa-solid fa-circle-play mr-1.5"></i> 00:45 / 45:10</span>
-            <div class="flex items-center gap-3 text-slate-300">
-              <span class="hover:text-white cursor-pointer"><i class="fa-solid fa-closed-captioning"></i> BN</span>
-              <span class="hover:text-white cursor-pointer"><i class="fa-solid fa-gear"></i> 1080p</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="p-4 bg-brand-surface flex items-center justify-between">
-        <span class="text-xs text-brand-muted font-bengali">নোটস দরকার? একই পেজের ক্লাস নোটস সেকশন থেকে ডাউনলোড করুন।</span>
-        <button onclick="closeVideoModal()" class="px-4 py-1.5 rounded-lg bg-brand-border text-xs text-white hover:bg-slate-700">বন্ধ করুন</button>
+      <div id="viewerContent" class="p-4 flex items-center justify-center bg-black min-h-[350px] max-h-[75vh] overflow-auto">
+        <!-- Content injected dynamically -->
       </div>
     </div>
   </div>
 
   <!-- Notification Toast -->
-  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 hidden bg-brand-card border border-brand-cyan text-white text-xs px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
-    <div class="w-6 h-6 rounded-full bg-brand-cyan text-brand-dark flex items-center justify-center font-bold text-xs">
-      <i class="fa-solid fa-check"></i>
-    </div>
-    <span id="toastMessage">অপারেশন সফল হয়েছে!</span>
+  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-gray-900 text-white text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 border border-purple-500/40">
+    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">সফল হয়েছে!</span>
   </div>
 
-  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <!-- ================= 6. JAVASCRIPT STATE & INTERACTIONS ================= -->
   <script>
-    /* -------------------------------------------------------------
-       DATABASE STATE (Initial data for Playlists, Notes, and Quiz)
-    -------------------------------------------------------------- */
-    const initialPlaylists = [
+    // Exact 9 chapters listed in the screenshot + default passwords & rich mock materials
+    const defaultChapters = [
       {
-        id: 'pl-1',
-        category: 'physics',
-        subject: 'পদার্থবিজ্ঞান',
-        title: 'তাপগতিবিদ্যা: জিরো থেকে বুয়েট টপার ম্যারাথন',
-        videosCount: 8,
-        hours: '৬.৫ ঘণ্টা',
-        difficulty: 'HSC + BUET',
-        thumbnailBg: 'from-blue-900 to-indigo-950',
-        badgeColor: 'border-brand-cyan text-brand-cyan'
+        id: 'ch-1',
+        title: '01 Analysis Files of Chemical Reaction Book',
+        paper: 'Special Guide',
+        password: '1234',
+        resources: [
+          {
+            type: 'note',
+            title: 'Chemical Reactions Master Classification & Mechanism Sheet',
+            url: 'https://example.com/reactions.pdf',
+            desc: 'জারণ-বিজারণ, ইলেকট্রোফিলিক প্রতিস্থাপন ও সংযোজন বিক্রিয়ার সম্পূর্ণ বুয়েট অ্যানালাইসিস।'
+          },
+          {
+            type: 'video',
+            title: 'রাসায়নিক বিক্রিয়া মনে রাখার শর্টকাট টেকনিক ও মেকানিজম',
+            url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            desc: 'Edu Marathon বিশেষ ক্লাস: কীভাবে ২ লাইনে মেকানিজম শেষ করা যায়।'
+          }
+        ]
       },
       {
-        id: 'pl-2',
-        category: 'physics',
-        subject: 'পদার্থবিজ্ঞান',
-        title: 'চলতড়িৎ ও হিটারের ক্ষমতা-ক্যালোরিমিতি ট্রিকস',
-        videosCount: 6,
-        hours: '৪.২ ঘণ্টা',
-        difficulty: 'Engineering Special',
-        thumbnailBg: 'from-cyan-950 to-slate-900',
-        badgeColor: 'border-brand-cyan text-brand-cyan'
+        id: 'ch-2',
+        title: '1 - Others Books Work - Shihab Bhai',
+        paper: 'Practice Material',
+        password: '1234',
+        resources: [
+          {
+            type: 'note',
+            title: 'হাজারী-নাগ ও লিংকন স্যারের বইয়ের গুরুত্বপূর্ণ গাণিতিক সমস্যাবলি',
+            url: 'https://example.com/shihab-work.pdf',
+            desc: 'শিহাব ভাই কর্তৃক নির্বাচিত অ্যাডমিশন টেস্টের জন্য শীর্ষ ৬০টি জটিল সমস্যা।'
+          }
+        ]
       },
       {
-        id: 'pl-3',
-        category: 'chemistry',
-        subject: 'রসায়ন',
-        title: 'পরিমাণগত রসায়ন: জারণ-বিজারণ ব্যালেন্সিং হ্যাকস',
-        videosCount: 5,
-        hours: '৩.৮ ঘণ্টা',
-        difficulty: 'Varsity ' + 'KA' + ' + Medical',
-        thumbnailBg: 'from-amber-950 to-stone-900',
-        badgeColor: 'border-brand-amber text-brand-amber'
+        id: 'ch-3',
+        title: '1st Paper Chapter 1 ল্যাবরেটরির নিরাপদ ব্যবহার',
+        paper: 'Chemistry 1st Paper',
+        password: '1234',
+        resources: [
+          {
+            type: 'note',
+            title: 'ল্যাবরেটরির গ্লাস সামগ্রী পরিষ্কারকরণ ও ক্ষতিকর রাসায়নিক ঝুঁকির ছক',
+            url: 'https://example.com/ch1-notes.pdf',
+            desc: 'ক্রোমিক এসিড মিশ্রণ ও হ্যাজার্ড সিম্বলের ১০০% কমন শিট।'
+          },
+          {
+            type: 'photo',
+            title: 'গ্লাসওয়্যার ও সেফটি সিম্বল মেমোরি কার্ড',
+            url: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=80',
+            desc: 'মেডিকেল ও ভার্সিটি পরীক্ষার জন্য দ্রুত চোখ বোলানোর পোস্টার।'
+          }
+        ]
       },
       {
-        id: 'pl-4',
-        category: 'math',
-        subject: 'উচ্চতর গণিত',
-        title: 'যোগজীকরণ (Integration): ক্যালকুলেটর শর্টকাট',
-        videosCount: 10,
-        hours: '৮.০ ঘণ্টা',
-        difficulty: 'BUET & CKET',
-        thumbnailBg: 'from-emerald-950 to-teal-950',
-        badgeColor: 'border-emerald-400 text-emerald-400'
+        id: 'ch-4',
+        title: '1st Paper Chapter 2 গুণগত রসায়ন',
+        paper: 'Chemistry 1st Paper',
+        password: '1234',
+        resources: [
+          {
+            type: 'note',
+            title: 'কোয়ান্টাম সংখ্যা, দ্রাব্যতা ও দ্রাব্যতা গুণফল (Ksp, Kip) হ্যান্ডনোট',
+            url: 'https://example.com/ch2-notes.pdf',
+            desc: 'বুয়েট ও ঢাবির গত ২০ বছরের দ্রাব্যতা সংক্রান্ত সকল ম্যাথ সমাধান।'
+          },
+          {
+            type: 'video',
+            title: 'দ্রাব্যতা ও দ্রাব্যতা গুণফল: ৩টি সুপার ট্রিকস',
+            url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            desc: 'Ksp সমীকরণ ও কমন আয়ন ইফেক্টের গাণিতিক সমাধান।'
+          },
+          {
+            type: 'photo',
+            title: 'শিখা পরীক্ষা ও ক্যাটায়ন সনাক্তকরণ চার্ট',
+            url: 'https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?auto=format&fit=crop&w=1200&q=80',
+            desc: 'কপার, সোডিয়াম, ক্যালসিয়াম ও বেরিয়ামের বর্ণ তালিকা।'
+          }
+        ]
       },
       {
-        id: 'pl-5',
-        category: 'tricks',
-        subject: 'শর্টকাট হ্যাকস',
-        title: 'ভর্তি পরীক্ষার ৩০ সেকেন্ডের এমসিকিউ হ্যাক সিরিজ',
-        videosCount: 14,
-        hours: '৫.৫ ঘণ্টা',
-        difficulty: 'All Aspirants',
-        thumbnailBg: 'from-rose-950 to-slate-900',
-        badgeColor: 'border-brand-rose text-brand-rose'
+        id: 'ch-5',
+        title: '1st Paper Chapter 3 মৌলের পর্যায়বৃত্ত ধর্ম ও রাসায়নিক বন্ধন',
+        paper: 'Chemistry 1st Paper',
+        password: '1234',
+        resources: [
+          {
+            type: 'note',
+            title: 'সংকরায়ন (Hybridization) নির্ণয়ের ১-লাইন শর্টকাট ও ফাজানের নীতি',
+            url: 'https://example.com/ch3-notes.pdf',
+            desc: 'যেকোনো যৌগের সংকরায়ন ১০ সেকেন্ডে বের করার ফর্মুলা।'
+          },
+          {
+            type: 'video',
+            title: 'ফাজানের নীতি ও বন্ধন কোণের ব্যতিক্রমসমূহ',
+            url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            desc: 'NH3, H2O, CH4 এর বন্ধন কোণের বিশ্লেষণ।'
+          }
+        ]
       },
       {
-        id: 'pl-6',
-        category: 'chemistry',
-        subject: 'রসায়ন',
-        title: 'জৈব যৌগ (Organic Chemistry) ফুল রোডম্যাপ',
-        videosCount: 12,
-        hours: '১১.২ ঘণ্টা',
-        difficulty: 'HSC Board + Admission',
-        thumbnailBg: 'from-purple-950 to-indigo-950',
-        badgeColor: 'border-purple-400 text-purple-400'
-      }
-    ];
-
-    const initialNotes = [
-      {
-        id: 'physics_thermal_01',
-        title: 'ক্যালোরিমিতি ও হিটার ক্ষমতা বুয়েট স্পেশাল শিট',
-        subject: 'physics',
-        subjectLabel: 'পদার্থবিজ্ঞান',
-        pages: 6,
-        author: 'তানভীর আহমেদ (BUET)',
-        downloads: 1420,
-        content: `
-          <div class="border-b border-slate-800 pb-3 mb-3">
-            <h4 class="text-base font-bold text-brand-cyan">ক্যালোরিমিতি ও বিদ্যুৎ শক্তির গাণিতিক রূপ</h4>
-            <p class="text-xs text-slate-400">চ্যাপ্টার: তাপ ও তাপগতিবিদ্যা / চলতড়িৎ (BUET Special)</p>
-          </div>
-          <div class="p-3 bg-brand-surface/70 rounded-xl border border-brand-border text-xs font-mono mb-3">
-            <strong>মূল সূত্র:</strong><br>
-            • গৃহিত তাপ, Q = m · s · Δθ<br>
-            • হিটারের সরবরাহকৃত শক্তি, W = P · t<br>
-            • আদর্শ ক্ষেত্রে: P · t = m · s · Δθ
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed font-bengali">
-            <strong>প্রবলেম টেকনিক (শীতকাল বনাম গ্রীষ্মকাল):</strong><br>
-            যেহেতু উভয় ঋতুতেই পানি স্ফুটনাঙ্ক অর্থাৎ 100°C এ পৌঁছায়, অতিরিক্ত সময়ের তাপশক্তিই মূলত তাপমাত্রার পার্থক্য তৈরি করে।<br>
-            সুতরাং শর্টকাট: <span class="text-brand-amber font-bold font-mono">P · Δt = m · s · (θ_summer - θ_winter)</span>
-          </p>
-        `
+        id: 'ch-6',
+        title: '1st Paper Chapter 4 রাসায়নিক পরিবর্তন',
+        paper: 'Chemistry 1st Paper',
+        password: '1234',
+        resources: [
+          {
+            type: 'note',
+            title: 'Kp & Kc গাণিতিক সূত্রাবলী ও বাফার দ্রবণের pH ক্যালকুলেটর ট্রিকস',
+            url: 'https://example.com/ch4-notes.pdf',
+            desc: 'হেনডারসন-হ্যাসেলবাল্ক সমীকরণ ও বাফার ধারণক্ষমতা।'
+          }
+        ]
       },
       {
-        id: 'chem_redox_01',
-        title: 'জারণ-বিজারণ সমতাকরণ ও নির্দেশক চার্ট',
-        subject: 'chemistry',
-        subjectLabel: 'রসায়ন',
-        pages: 8,
-        author: 'সুমাইয়া রহমান (DMC)',
-        downloads: 980,
-        content: `
-          <div class="border-b border-slate-800 pb-3 mb-3">
-            <h4 class="text-base font-bold text-brand-amber">আয়ন-ইলেকট্রন পদ্ধতিতে সমতাকরণ নিয়মাবলি</h4>
-            <p class="text-xs text-slate-400">চ্যাপ্টার: পরিমাণগত রসায়ন (HSC + Admission)</p>
-          </div>
-          <div class="space-y-2 text-xs text-slate-300 font-bengali">
-            <p><strong>১. অম্লীয় মাধ্যমে জারক বিক্রিয়া:</strong><br>
-            MnO₄⁻ + 8H⁺ + 5e⁻ ⟶ Mn²⁺ + 4H₂O (তুল্য সংখ্যা = ৫)</p>
-            <p><strong>২. বিজারক বিক্রিয়া:</strong><br>
-            Fe²⁺ ⟶ Fe³⁺ + e⁻ (তুল্য সংখ্যা = ১)</p>
-          </div>
-        `
+        id: 'ch-7',
+        title: '1st Paper Chapter 5 কর্মমুখী রসায়ন',
+        paper: 'Chemistry 1st Paper',
+        password: '1234',
+        resources: [
+          {
+            type: 'note',
+            title: 'খাদ্য নিরাপত্তা, প্রিজারভেটিভস ও প্রসাধন সামগ্রী প্রস্তুত প্রণালী',
+            url: 'https://example.com/ch5-notes.pdf',
+            desc: 'মেডিকেল ভর্তি পরীক্ষার জন্য মুখস্থযোগ্য তথ্যসংগ্রহ।'
+          }
+        ]
       },
       {
-        id: 'math_calculus_01',
-        title: 'ক্যালকুলাস: নির্দিষ্ট যোগজীকরণ এর শর্টকাট ট্রিকস',
-        subject: 'math',
-        subjectLabel: 'উচ্চতর গণিত',
-        pages: 5,
-        author: 'রাফিদ হাসান (RUET)',
-        downloads: 2150,
-        content: `
-          <div class="border-b border-slate-800 pb-3 mb-3">
-            <h4 class="text-base font-bold text-emerald-400">Definite Integration Cheat Sheet</h4>
-            <p class="text-xs text-slate-400">MCQ স্পেশাল: ১০ সেকেন্ডের সমাধান কৌশল</p>
-          </div>
-          <div class="p-3 bg-brand-surface rounded-xl text-xs font-mono text-emerald-300">
-            ∫ [0 to π/2] (sinⁿ x / (sinⁿ x + cosⁿ x)) dx = π/4<br>
-            যেখানে n এর মান যেকোনো বাস্তব সংখ্যা হতে পারে!
-          </div>
-        `
+        id: 'ch-8',
+        title: '2nd Paper Chapter 1 পরিবেশ রসায়ন',
+        paper: 'Chemistry 2nd Paper',
+        password: '1234',
+        resources: [
+          {
+            type: 'note',
+            title: 'বয়েল, চার্লস, ডাল্টনের আংশিক চাপ ও গ্রাহামের ব্যাপন সূত্র হ্যান্ডশিট',
+            url: 'https://example.com/ch8-notes.pdf',
+            desc: 'আদর্শ গ্যাস বনাম বাস্তব গ্যাস এবং ভ্যান ডার ওয়ালস সমীকরণ।'
+          },
+          {
+            type: 'video',
+            title: 'গ্রাহামের ব্যাপন সূত্রের জটিল ইঞ্জিনিয়ারিং প্রবলেম সলভিং',
+            url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            desc: 'BUET ও CKET এর বিগত ১০ বছরের প্রশ্ন ব্যাংক সলভ।'
+          }
+        ]
       },
       {
-        id: 'physics_formula_all',
-        title: 'পদার্থবিজ্ঞান ১ম ও ২য় পত্রের সকল প্রয়োজনীয় সূত্র',
-        subject: 'formula',
-        subjectLabel: 'সূত্র ব্যাংক',
-        pages: 18,
-        author: 'Edu Marathon মেন্টর প্যানেল',
-        downloads: 4320,
-        content: `
-          <div class="border-b border-slate-800 pb-3 mb-3">
-            <h4 class="text-base font-bold text-brand-cyan">Master Formula Handbook (HSC 2025/2026)</h4>
-            <p class="text-xs text-slate-400">ভর্তি পরীক্ষার আগের রাতে দ্রুত রিভিশনের কম্প্যাক্ট সংকলন</p>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed font-bengali">
-            বলবিদ্যা, মহাকর্ষ, তরঙ্গ, স্থির তড়িৎ এবং পরমাণু মডেলের সকল একক, মাত্রা ও কনস্ট্যান্টের নির্ভুল চার্ট এই নোটে সংকলিত।
-          </p>
-        `
-      }
-    ];
-
-    const quizData = [
-      {
-        question: "একটি ১.২ kW ক্ষমতার হিটারে পানি ফুটতে গ্রীষ্মে ৪ মিনিট এবং শীতে ৫.৫ মিনিট সময় লাগলে, তাপমাত্রার পার্থক্য কত?",
-        options: [
-          "15.50 °C",
-          "21.43 °C",
-          "25.20 °C",
-          "18.75 °C"
-        ],
-        correctIndex: 1,
-        explanation: "সরাসরি শর্টকাট সূত্র: m · s · Δθ = P · Δt । এখানে Δt = ১.৫ মিনিট = ৯০ সেকেন্ড। অতএব Δθ = (১২০০ × ৯০) / (১.২ × ৪২০০) = ২১.৪৩ °C।"
-      },
-      {
-        question: "অম্লীয় মাধ্যমে পটাশিয়াম ডাইক্রোমেট (K₂Cr₂O₇) এর ১ মোলের জন্য কয়টি ইলেকট্রন গ্রহণ ঘটে (তুল্য সংখ্যা কত)?",
-        options: [
-          "৩",
-          "৫",
-          "৬",
-          "৭"
-        ],
-        correctIndex: 2,
-        explanation: "অম্লীয় মাধ্যমে Cr₂O₇²⁻ + 14H⁺ + 6e⁻ ⟶ 2Cr³⁺ + 7H₂O ঘটে। প্রতিটি ক্রোমিয়াম ৩টি করে মোট ২টি ক্রোমিয়ামের জন্য ৬টি ইলেকট্রন হস্তান্তরিত হয়।"
-      },
-      {
-        question: "y² = 4ax পরাবৃত্ত এবং y = mx সরলরেখা দ্বারা আবদ্ধ ক্ষেত্রের ক্ষেত্রফল কোনটি?",
-        options: [
-          "(8/3) · (a² / m³)",
-          "(16/3) · (a / m²)",
-          "(4/3) · (a² · m)",
-          "(8/5) · (a³ / m²)"
-        ],
-        correctIndex: 0,
-        explanation: "স্ট্যান্ডার্ড শর্টকাট ক্যালকুলাস ফরমূলা অনুসারে ক্ষেত্রফল = 8a² / (3m³)। এটি ভর্তি পরীক্ষায় সময় বাঁচানোর জন্য অত্যন্ত দরকারি।"
+        id: 'ch-9',
+        title: '2nd Paper Chapter 2 জৈব রসায়ন',
+        paper: 'Chemistry 2nd Paper',
+        password: '1234',
+        resources: [
+          {
+            type: 'note',
+            title: 'জৈব রসায়নের ১০০টি গুরুত্বপূর্ণ রূপান্তর ও বিক্রিয়া রোডম্যাপ',
+            url: 'https://example.com/ch9-notes.pdf',
+            desc: 'অ্যালকেন থেকে শুরু করে ডায়াজোনিয়াম লবণ পর্যন্ত সম্পূর্ণ ফ্লোচার্ট।'
+          },
+          {
+            type: 'video',
+            title: 'SN1, SN2, E1, E2 বিক্রিয়ার মেকানিজম ক্রিস্টাল ক্লিয়ার ক্লাস',
+            url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            desc: 'নিউক্লিওফিলিক প্রতিস্থাপন বিক্রিয়া সহজ ভাষায় ব্যাখ্যা।'
+          },
+          {
+            type: 'photo',
+            title: 'জৈব রসায়ন রূপান্তর মেগা ফ্লোচার্ট',
+            url: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=1200&q=80',
+            desc: 'হ্যান্ড ড্রয়িং রিঅ্যাকশন নেটওয়ার্ক ম্যাপ।'
+          }
+        ]
       }
     ];
 
     // Reactive State
-    let activePlaylists = [...initialPlaylists];
-    let activeNotes = JSON.parse(localStorage.getItem('edu_marathon_notes')) || [...initialNotes];
-    let currentQuizIndex = 0;
-    let currentQuizScore = 0;
-    let quizAnswered = false;
+    let chapters = JSON.parse(localStorage.getItem('portal_chem_chapters')) || defaultChapters;
+    let unlockedChapterIds = JSON.parse(sessionStorage.getItem('portal_unlocked_ids')) || [];
+    let pendingChapterId = null;
+    let activeChapterId = null;
+    let activeResourceFilter = 'all';
 
-    /* -------------------------------------------------------------
-       DOM INITIALIZATION
-    -------------------------------------------------------------- */
-    document.addEventListener('DOMContentLoaded', () => {
-      renderPlaylists(activePlaylists);
-      renderNotes(activeNotes);
-      renderQuizQuestion();
-      setupSearchListeners();
+    // DOM Elements
+    const chaptersListContainer = document.getElementById('chaptersListContainer');
+    const emptyStateView = document.getElementById('emptyStateView');
+    const unlockedContentView = document.getElementById('unlockedContentView');
+    const chapterDisplayTitle = document.getElementById('chapterDisplayTitle');
+    const chapterPaperBadge = document.getElementById('chapterPaperBadge');
+    const chapterActionButtons = document.getElementById('chapterActionButtons');
+    const currentStatusBadge = document.getElementById('currentStatusBadge');
+    const activeChapterSubText = document.getElementById('activeChapterSubText');
+    const passwordModal = document.getElementById('passwordModal');
+    const passwordModalCard = document.getElementById('passwordModalCard');
+    const passwordInputField = document.getElementById('passwordInputField');
+    const passwordErrorMsg = document.getElementById('passwordErrorMsg');
+    const pwdToggleIcon = document.getElementById('pwdToggleIcon');
 
-      // Mobile Menu Toggle
-      const mobileBtn = document.getElementById('mobileMenuBtn');
-      const mobileMenu = document.getElementById('mobileMenu');
-      mobileBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
+    // Initialize application on load
+    window.onload = function() {
+      renderChaptersList();
+      setupMobileSidebar();
+      
+      // Handle Enter key on password input
+      passwordInputField.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          validatePasswordSubmission();
+        }
       });
-    });
+    };
 
-    /* -------------------------------------------------------------
-       PLAYLISTS LOGIC
-    -------------------------------------------------------------- */
-    function renderPlaylists(playlists) {
-      const container = document.getElementById('playlistContainer');
-      container.innerHTML = '';
+    /* ------------------------------------------------------------------
+       SIDEBAR & CHAPTER RENDERING
+    ------------------------------------------------------------------- */
+    function renderChaptersList() {
+      chaptersListContainer.innerHTML = '';
 
-      if (playlists.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-3 text-center py-12 text-slate-400 font-bengali">
-            <i class="fa-solid fa-film text-3xl mb-2 text-slate-600"></i>
-            <p>কোনো প্লেলিস্ট পাওয়া যায়নি।</p>
-          </div>
-        `;
-        return;
-      }
+      chapters.forEach(ch => {
+        const isUnlocked = unlockedChapterIds.includes(ch.id);
+        const isActive = activeChapterId === ch.id;
 
-      playlists.forEach(pl => {
-        const card = document.createElement('div');
-        card.className = "rounded-3xl bg-brand-card border border-brand-border overflow-hidden hover:border-brand-cyan/60 hover:-translate-y-1 transition-all duration-300 flex flex-col group";
+        // Container button for chapter card
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.onclick = () => onChapterClicked(ch.id);
+
+        // Exact lavender / royal purple rounded card style from your screenshot
+        // When active, switches to blue shade (#2a62a9) as seen in screenshot 2
+        let cardBgClass = isActive 
+          ? 'bg-[#2a62a9] ring-2 ring-blue-300' 
+          : 'bg-[#7847a1] hover:bg-[#854fb3] active:bg-[#6c3c95]';
+
+        card.className = `w-full text-left p-3.5 sm:p-4 rounded-xl text-white font-bengali font-bold text-sm sm:text-[15px] leading-snug tracking-normal shadow-sm transition-all duration-150 flex items-center justify-between group ${cardBgClass}`;
+        
         card.innerHTML = `
-          <!-- Thumbnail Mockup -->
-          <div class="h-44 bg-gradient-to-br ${pl.thumbnailBg} p-5 flex flex-col justify-between relative overflow-hidden">
-            <div class="flex items-center justify-between z-10">
-              <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-black/60 border ${pl.badgeColor}">
-                ${pl.subject}
-              </span>
-              <span class="text-xs font-mono text-slate-300 bg-black/40 px-2 py-0.5 rounded">
-                ${pl.hours}
-              </span>
-            </div>
-
-            <div class="z-10 flex items-center justify-between">
-              <div class="flex items-center gap-2 text-xs text-slate-300">
-                <i class="fa-solid fa-list-check text-brand-cyan"></i>
-                <span>${pl.videosCount} টি ক্লাস</span>
-              </div>
-              <button 
-                onclick="openVideoModal('${pl.title}', '')" 
-                class="w-10 h-10 rounded-full bg-brand-cyan/90 text-brand-dark flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition active:scale-95"
-              >
-                <i class="fa-solid fa-play ml-0.5"></i>
-              </button>
-            </div>
-
-            <!-- Background subtle pattern -->
-            <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/5 rounded-full blur-xl"></div>
+          <div class="flex-1 pr-2">
+            <span class="block text-white/95">${ch.title}</span>
           </div>
-
-          <!-- Body Info -->
-          <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
-            <div>
-              <div class="text-[11px] font-semibold text-brand-muted uppercase mb-1">${pl.difficulty}</div>
-              <h3 class="text-base font-bold text-white group-hover:text-brand-cyan transition font-bengali leading-snug">
-                ${pl.title}
-              </h3>
-            </div>
-
-            <div class="pt-3 border-t border-brand-border/60 flex items-center justify-between">
-              <button 
-                onclick="openVideoModal('${pl.title}', '')" 
-                class="text-xs font-bold text-brand-cyan hover:underline flex items-center gap-1.5"
-              >
-                <span>ম্যারাথন দেখুন</span>
-                <i class="fa-solid fa-arrow-right text-[10px]"></i>
-              </button>
-              <span class="text-[11px] text-slate-400"><i class="fa-regular fa-circle-check text-emerald-400"></i> কমপ্লিট সিরিজ</span>
-            </div>
+          <div class="flex-shrink-0 text-xs ml-1">
+            ${isUnlocked 
+              ? '<i class="fa-solid fa-unlock text-emerald-300 text-xs opacity-90" title="আনলক করা আছে"></i>' 
+              : '<i class="fa-solid fa-lock text-white/50 group-hover:text-white/80 transition-opacity text-xs" title="পাসওয়ার্ড সুরক্ষিত"></i>'
+            }
           </div>
         `;
-        container.appendChild(card);
+
+        chaptersListContainer.appendChild(card);
       });
     }
 
-    function filterPlaylists(category) {
-      // Button states
-      const buttons = document.querySelectorAll('#playlistFilterBar .filter-btn');
-      buttons.forEach(btn => {
-        btn.classList.remove('bg-brand-cyan', 'text-brand-dark');
-        btn.classList.add('text-slate-300');
-      });
-      event.target.classList.add('bg-brand-cyan', 'text-brand-dark');
-      event.target.classList.remove('text-slate-300');
+    /* ------------------------------------------------------------------
+       PASSWORD PROMPT MODAL FLOW (IMAGE 2 REPLICATION)
+    ------------------------------------------------------------------- */
+    function onChapterClicked(chapterId) {
+      // Close mobile sidebar if open
+      closeMobileSidebar();
 
-      if (category === 'all') {
-        activePlaylists = [...initialPlaylists];
-      } else {
-        activePlaylists = initialPlaylists.filter(p => p.category === category);
-      }
-      renderPlaylists(activePlaylists);
-    }
-
-    /* -------------------------------------------------------------
-       CLASS NOTES LOGIC
-    -------------------------------------------------------------- */
-    function renderNotes(notes) {
-      const container = document.getElementById('notesContainer');
-      container.innerHTML = '';
-
-      if (notes.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-4 text-center py-10 text-slate-400 font-bengali">
-            <i class="fa-regular fa-folder-open text-3xl mb-2 text-slate-600"></i>
-            <p>কোনো নোট বা শিট খুঁজে পাওয়া যায়নি।</p>
-          </div>
-        `;
+      // If already unlocked in this session, immediately display it
+      if (unlockedChapterIds.includes(chapterId)) {
+        displayChapter(chapterId);
         return;
       }
 
-      notes.forEach(note => {
+      // Otherwise, open the password modal dialog (matching Image 2)
+      pendingChapterId = chapterId;
+      passwordInputField.value = '';
+      passwordErrorMsg.classList.add('hidden');
+      passwordInputField.classList.remove('border-red-500', 'ring-red-300');
+      passwordInputField.classList.add('border-[#2b72d7]');
+
+      passwordModal.classList.remove('hidden');
+      setTimeout(() => {
+        passwordModalCard.classList.remove('scale-95');
+        passwordModalCard.classList.add('scale-100');
+        passwordInputField.focus();
+      }, 50);
+    }
+
+    function closePasswordModal() {
+      passwordModalCard.classList.remove('scale-100');
+      passwordModalCard.classList.add('scale-95');
+      setTimeout(() => {
+        passwordModal.classList.add('hidden');
+        pendingChapterId = null;
+      }, 150);
+    }
+
+    function togglePasswordVisibility() {
+      if (passwordInputField.type === 'password') {
+        passwordInputField.type = 'text';
+        pwdToggleIcon.classList.remove('fa-eye');
+        pwdToggleIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInputField.type = 'password';
+        pwdToggleIcon.classList.remove('fa-eye-slash');
+        pwdToggleIcon.classList.add('fa-eye');
+      }
+    }
+
+    function validatePasswordSubmission() {
+      if (!pendingChapterId) return;
+
+      const enteredPassword = passwordInputField.value.trim();
+      const targetChapter = chapters.find(c => c.id === pendingChapterId);
+
+      if (!targetChapter) return;
+
+      // Check if password matches target chapter password
+      if (enteredPassword === targetChapter.password) {
+        // Success
+        if (!unlockedChapterIds.includes(targetChapter.id)) {
+          unlockedChapterIds.push(targetChapter.id);
+          sessionStorage.setItem('portal_unlocked_ids', JSON.stringify(unlockedChapterIds));
+        }
+
+        const unlockedId = targetChapter.id;
+        closePasswordModal();
+        displayChapter(unlockedId);
+        renderChaptersList();
+        showToast(`'${targetChapter.title}' সফলভাবে আনলক হয়েছে!`);
+      } else {
+        // Incorrect password: show error & subtle shake
+        passwordErrorMsg.classList.remove('hidden');
+        passwordInputField.classList.add('border-red-500');
+        passwordModalCard.classList.remove('shake-error');
+        void passwordModalCard.offsetWidth; // Trigger reflow
+        passwordModalCard.classList.add('shake-error');
+        passwordInputField.select();
+      }
+    }
+
+    /* ------------------------------------------------------------------
+       DISPLAYING UNLOCKED CHAPTER
+    ------------------------------------------------------------------- */
+    function displayChapter(chapterId) {
+      const chapter = chapters.find(c => c.id === chapterId);
+      if (!chapter) return;
+
+      activeChapterId = chapter.id;
+
+      // Toggle views
+      emptyStateView.classList.add('hidden');
+      unlockedContentView.classList.remove('hidden');
+      chapterActionButtons.classList.remove('hidden');
+      currentStatusBadge.classList.remove('hidden');
+      currentStatusBadge.classList.add('inline-flex');
+
+      // Update titles
+      chapterDisplayTitle.innerText = chapter.title;
+      chapterPaperBadge.innerText = chapter.paper || 'HSC রসায়ন';
+      activeChapterSubText.innerText = `বর্তমান অধ্যায়: ${chapter.title}`;
+
+      renderChaptersList();
+      renderChapterResources(chapter);
+    }
+
+    function renderChapterResources(chapter) {
+      const container = document.getElementById('resourcesGrid');
+      const emptyNotice = document.getElementById('emptyResourcesNotice');
+      container.innerHTML = '';
+
+      let items = chapter.resources || [];
+      if (activeResourceFilter !== 'all') {
+        items = items.filter(r => r.type === activeResourceFilter);
+      }
+
+      // Update Stat Counters
+      const allItems = chapter.resources || [];
+      document.getElementById('statNotesCount').innerHTML = `<i class="fa-regular fa-file-pdf text-red-500 mr-1"></i> ${allItems.filter(i=>i.type==='note').length}টি নোটস`;
+      document.getElementById('statVideosCount').innerHTML = `<i class="fa-brands fa-youtube text-red-600 mr-1"></i> ${allItems.filter(i=>i.type==='video').length}টি ভিডিও`;
+      document.getElementById('statPhotosCount').innerHTML = `<i class="fa-regular fa-image text-emerald-500 mr-1"></i> ${allItems.filter(i=>i.type==='photo').length}টি ডায়াগ্রাম`;
+
+      if (items.length === 0) {
+        emptyNotice.classList.remove('hidden');
+        return;
+      } else {
+        emptyNotice.classList.add('hidden');
+      }
+
+      items.forEach((res, index) => {
         const card = document.createElement('div');
-        card.className = "p-5 rounded-2xl bg-brand-surface border border-brand-border hover:border-brand-amber/60 hover:-translate-y-1 transition duration-200 flex flex-col justify-between group";
+        card.className = "bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg hover:border-purple-300 transition-all duration-200 flex flex-col justify-between";
+
+        let badge = '';
+        let previewHtml = '';
+
+        if (res.type === 'note') {
+          badge = `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-red-100 text-red-700 flex items-center gap-1"><i class="fa-regular fa-file-pdf"></i> PDF নোট</span>`;
+          previewHtml = `
+            <div class="h-32 bg-gradient-to-br from-red-50 to-orange-50 border-b border-gray-100 flex items-center justify-center text-red-400">
+              <i class="fa-solid fa-file-lines text-5xl"></i>
+            </div>
+          `;
+        } else if (res.type === 'video') {
+          badge = `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-purple-100 text-purple-700 flex items-center gap-1"><i class="fa-brands fa-youtube"></i> লেকচার ভিডিও</span>`;
+          previewHtml = `
+            <div class="h-32 bg-slate-900 border-b border-gray-800 flex items-center justify-center text-red-500 relative group cursor-pointer" onclick="openMediaViewer('video', '${escapeHtml(res.title)}', '${res.url}')">
+              <i class="fa-brands fa-youtube text-5xl group-hover:scale-110 transition-transform"></i>
+              <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">ভিডিও</span>
+            </div>
+          `;
+        } else {
+          badge = `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-700 flex items-center gap-1"><i class="fa-regular fa-image"></i> ডায়াগ্রাম</span>`;
+          previewHtml = `
+            <div class="h-32 bg-gray-100 border-b border-gray-100 overflow-hidden cursor-pointer" onclick="openMediaViewer('photo', '${escapeHtml(res.title)}', '${res.url}')">
+              <img src="${res.url}" alt="${res.title}" class="w-full h-full object-cover hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/600x400/52217e/ffffff?text=Chemistry+Diagram'">
+            </div>
+          `;
+        }
+
         card.innerHTML = `
           <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-brand-card text-brand-amber uppercase border border-brand-border">
-                ${note.subjectLabel || note.subject}
-              </span>
-              <span class="text-xs text-slate-400 flex items-center gap-1 font-mono">
-                <i class="fa-solid fa-file-lines text-brand-muted"></i> ${note.pages} পৃষ্ঠা
-              </span>
+            ${previewHtml}
+            <div class="p-4">
+              <div class="flex items-center justify-between mb-2">
+                ${badge}
+                <button onclick="deleteResourceItem(${index})" class="text-gray-400 hover:text-red-500 text-xs" title="রিসোর্স মুছুন">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
+              </div>
+              <h4 class="font-bold text-gray-900 text-sm leading-snug font-bengali">${res.title}</h4>
+              ${res.desc ? `<p class="text-xs text-gray-500 mt-1.5 font-bengali leading-relaxed">${res.desc}</p>` : ''}
             </div>
-
-            <h4 class="text-sm font-bold text-white group-hover:text-brand-amber transition line-clamp-2 mb-2 font-bengali">
-              ${note.title}
-            </h4>
-
-            <p class="text-[11px] text-brand-muted mb-4 font-bengali flex items-center gap-1">
-              <i class="fa-solid fa-user-pen text-[10px]"></i> ${note.author}
-            </p>
           </div>
 
-          <div class="pt-3 border-t border-brand-border/60 flex items-center gap-2">
+          <div class="p-4 pt-0">
             <button 
-              onclick="previewNote('${note.id}')" 
-              class="w-1/2 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-xs font-semibold text-white border border-brand-border/80 flex items-center justify-center gap-1 transition"
+              onclick="openMediaViewer('${res.type}', '${escapeHtml(res.title)}', '${res.url}')" 
+              class="w-full py-2 rounded-xl bg-purple-50 hover:bg-[#52217e] text-[#52217e] hover:text-white font-bold text-xs transition flex items-center justify-center gap-2 border border-purple-200 hover:border-transparent font-bengali"
             >
-              <i class="fa-regular fa-eye text-brand-cyan"></i> প্রিভিউ
-            </button>
-            <button 
-              onclick="simulateDownload('${note.title}')" 
-              class="w-1/2 py-2 rounded-xl bg-brand-amber/15 hover:bg-brand-amber text-brand-amber hover:text-brand-dark text-xs font-bold border border-brand-amber/30 flex items-center justify-center gap-1 transition"
-            >
-              <i class="fa-solid fa-download"></i> PDF
+              <i class="fa-solid fa-eye text-xs"></i>
+              <span>প্রিভিউ দেখুন</span>
             </button>
           </div>
         `;
+
         container.appendChild(card);
       });
     }
 
-    function filterNotes(category) {
-      const buttons = document.querySelectorAll('#notesFilterBar .note-filter-btn');
+    function filterResources(type) {
+      activeResourceFilter = type;
+      const buttons = document.querySelectorAll('.res-filter-btn');
       buttons.forEach(btn => {
-        btn.classList.remove('bg-brand-amber', 'text-brand-dark');
-        btn.classList.add('text-slate-300');
+        btn.classList.remove('bg-[#52217e]', 'text-white');
+        btn.classList.add('text-gray-600', 'hover:bg-gray-100');
       });
-      event.target.classList.add('bg-brand-amber', 'text-brand-dark');
-      event.target.classList.remove('text-slate-300');
+      event.target.classList.add('bg-[#52217e]', 'text-white');
+      event.target.classList.remove('text-gray-600', 'hover:bg-gray-100');
 
-      if (category === 'all') {
-        renderNotes(activeNotes);
-      } else {
-        const filtered = activeNotes.filter(n => n.subject === category);
-        renderNotes(filtered);
+      if (activeChapterId) {
+        const chapter = chapters.find(c => c.id === activeChapterId);
+        if (chapter) renderChapterResources(chapter);
       }
     }
 
-    function previewNote(noteId) {
-      const note = activeNotes.find(n => n.id === noteId) || initialNotes.find(n => n.id === noteId);
-      if (!note) return;
+    function lockCurrentChapter() {
+      if (!activeChapterId) return;
+      unlockedChapterIds = unlockedChapterIds.filter(id => id !== activeChapterId);
+      sessionStorage.setItem('portal_unlocked_ids', JSON.stringify(unlockedChapterIds));
+      
+      const lockedTitle = chapters.find(c => c.id === activeChapterId)?.title;
+      activeChapterId = null;
+      
+      emptyStateView.classList.remove('hidden');
+      unlockedContentView.classList.add('hidden');
+      chapterActionButtons.classList.add('hidden');
+      currentStatusBadge.classList.add('hidden');
+      activeChapterSubText.innerText = 'কোনো অধ্যায় খোলা নেই';
 
-      document.getElementById('previewTitle').innerText = note.title;
-      document.getElementById('previewMeta').innerText = `লেখক: ${note.author} • পৃষ্ঠা: ${note.pages}`;
-      document.getElementById('previewContent').innerHTML = note.content || `
-        <div class="p-6 text-center text-slate-300 font-bengali">
-          <i class="fa-solid fa-file-pdf text-4xl text-brand-amber mb-3"></i>
-          <p class="font-bold text-base text-white">${note.title}</p>
-          <p class="text-xs text-slate-400 mt-2">এই নোটটি PDF আকারে সার্ভারে সংরক্ষিত আছে। সম্পূর্ণ পড়ার জন্য নিচের বাটনে ক্লিক করে ডাউনলোড করুন।</p>
-        </div>
-      `;
-
-      document.getElementById('previewModal').classList.remove('hidden');
+      renderChaptersList();
+      showToast(`'${lockedTitle}' পুনরায় লক করা হয়েছে!`);
     }
 
-    function closePreviewModal() {
-      document.getElementById('previewModal').classList.add('hidden');
+    function resetAllLocks() {
+      unlockedChapterIds = [];
+      sessionStorage.removeItem('portal_unlocked_ids');
+      activeChapterId = null;
+
+      emptyStateView.classList.remove('hidden');
+      unlockedContentView.classList.add('hidden');
+      chapterActionButtons.classList.add('hidden');
+      currentStatusBadge.classList.add('hidden');
+      activeChapterSubText.innerText = 'কোনো অধ্যায় খোলা নেই';
+
+      renderChaptersList();
+      showToast('সকল অধ্যায়ের সেশন পুনরায় লক করা হয়েছে!');
     }
 
-    function simulateDownload(title = 'Edu Marathon Note') {
-      showToast(`'${title}' ডাউনলোড শুরু হয়েছে!`);
+    /* ------------------------------------------------------------------
+       RESOURCE MODAL & LOCALSTORAGE
+    ------------------------------------------------------------------- */
+    function openAddResourceModal() {
+      if (!activeChapterId) return;
+      document.getElementById('resourceForm').reset();
+      toggleResourceInputTypes();
+      document.getElementById('addResourceModal').classList.remove('hidden');
     }
 
-    /* -------------------------------------------------------------
-       NOTE UPLOAD MODAL LOGIC
-    -------------------------------------------------------------- */
-    function openUploadModal() {
-      document.getElementById('uploadModal').classList.remove('hidden');
+    function closeAddResourceModal() {
+      document.getElementById('addResourceModal').classList.add('hidden');
     }
 
-    function closeUploadModal() {
-      document.getElementById('uploadModal').classList.add('hidden');
+    function toggleResourceInputTypes() {
+      const type = document.getElementById('resType').value;
+      const urlLabel = document.getElementById('resUrlLabel');
+      const urlInput = document.getElementById('resUrl');
+
+      if (type === 'video') {
+        urlLabel.innerText = 'YouTube ভিডিও URL বা Embed লিংক *';
+        urlInput.placeholder = 'https://www.youtube.com/watch?v=...';
+      } else if (type === 'photo') {
+        urlLabel.innerText = 'ছবির ওয়েব লিংক (Image URL) *';
+        urlInput.placeholder = 'https://images.unsplash.com/...';
+      } else {
+        urlLabel.innerText = 'PDF লিংক অথবা ড্রাইভ URL *';
+        urlInput.placeholder = 'https://drive.google.com/...';
+      }
     }
 
-    function handleNoteUpload(e) {
+    function handleResourceSubmit(e) {
       e.preventDefault();
-      const title = document.getElementById('modalNoteTitle').value;
-      const subject = document.getElementById('modalNoteSubject').value;
-      const pages = document.getElementById('modalNotePages').value;
-      const author = document.getElementById('modalNoteAuthor').value || 'কমিউনিটি লার্নার';
+      if (!activeChapterId) return;
 
-      const subjectLabels = {
-        physics: 'পদার্থবিজ্ঞান',
-        chemistry: 'রসায়ন',
-        math: 'উচ্চতর গণিত',
-        formula: 'ফর্মুলা শিট'
-      };
+      const type = document.getElementById('resType').value;
+      const title = document.getElementById('resTitle').value.trim();
+      let url = document.getElementById('resUrl').value.trim();
+      const desc = document.getElementById('resDescription').value.trim();
 
-      const newNote = {
-        id: 'user_note_' + Date.now(),
-        title: title,
-        subject: subject,
-        subjectLabel: subjectLabels[subject] || 'নোট',
-        pages: parseInt(pages) || 2,
-        author: author,
-        downloads: 1,
-        content: `
-          <div class="border-b border-slate-800 pb-3 mb-3">
-            <h4 class="text-base font-bold text-brand-cyan">${title}</h4>
-            <p class="text-xs text-slate-400">আপলোডকারী: ${author} (সদ্য যুক্তকৃত কমিউনিটি নোট)</p>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed font-bengali">
-            অভিনন্দন! আপনার আপলোডকৃত হ্যান্ডরিটেন নোটটি সফলভাবে প্রিভিউ তালিকায় যুক্ত করা হয়েছে।
-          </p>
-        `
-      };
+      // YouTube embed URL conversion helper
+      if (type === 'video' && url.includes('youtube.com/watch?v=')) {
+        const videoId = url.split('v=')[1]?.split('&')[0];
+        if (videoId) url = `https://www.youtube.com/embed/${videoId}`;
+      } else if (type === 'video' && url.includes('youtu.be/')) {
+        const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+        if (videoId) url = `https://www.youtube.com/embed/${videoId}`;
+      }
 
-      activeNotes.unshift(newNote);
-      localStorage.setItem('edu_marathon_notes', JSON.stringify(activeNotes));
-      renderNotes(activeNotes);
-
-      closeUploadModal();
-      document.getElementById('noteUploadForm').reset();
-      showToast('নোটটি সফলভাবে আপলোড হয়েছে এবং তালিকায় যুক্ত করা হয়েছে!');
-    }
-
-    /* -------------------------------------------------------------
-       VIDEO MODAL LOGIC
-    -------------------------------------------------------------- */
-    function openVideoModal(title, url) {
-      document.getElementById('videoModalTitle').innerText = title;
-      document.getElementById('videoInnerTitle').innerText = title;
-      document.getElementById('videoModal').classList.remove('hidden');
-    }
-
-    function closeVideoModal() {
-      document.getElementById('videoModal').classList.add('hidden');
-    }
-
-    /* -------------------------------------------------------------
-       SPEED QUIZ MARATHON LOGIC
-    -------------------------------------------------------------- */
-    function renderQuizQuestion() {
-      const q = quizData[currentQuizIndex];
-      const box = document.getElementById('quizQuestionBox');
-      const stepText = document.getElementById('quizStepText');
-      const explanationBox = document.getElementById('quizExplanation');
-      const nextBtn = document.getElementById('nextQuizBtn');
-
-      quizAnswered = false;
-      explanationBox.classList.add('hidden');
-      nextBtn.classList.add('hidden');
-
-      stepText.innerText = `প্রশ্ন ${currentQuizIndex + 1} এর ${quizData.length}`;
-
-      box.innerHTML = `
-        <h4 class="text-sm sm:text-base font-bold text-white font-bengali leading-snug">
-          ${currentQuizIndex + 1}. ${q.question}
-        </h4>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-          ${q.options.map((opt, i) => `
-            <button 
-              onclick="selectQuizAnswer(${i})" 
-              class="quiz-opt-btn p-3.5 rounded-xl bg-brand-surface hover:bg-brand-border border border-brand-border text-xs text-left text-slate-200 font-medium transition flex items-center justify-between"
-              data-index="${i}"
-            >
-              <span>${opt}</span>
-              <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] text-slate-400">${String.fromCharCode(65 + i)}</span>
-            </button>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    function selectQuizAnswer(selectedIndex) {
-      if (quizAnswered) return;
-      quizAnswered = true;
-
-      const q = quizData[currentQuizIndex];
-      const buttons = document.querySelectorAll('.quiz-opt-btn');
-      const explanationBox = document.getElementById('quizExplanation');
-      const nextBtn = document.getElementById('nextQuizBtn');
-
-      buttons.forEach((btn, idx) => {
-        btn.disabled = true;
-        if (idx === q.correctIndex) {
-          btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-300');
-          btn.querySelector('span:last-child').innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i>';
-        } else if (idx === selectedIndex) {
-          btn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-300');
-          btn.querySelector('span:last-child').innerHTML = '<i class="fa-solid fa-xmark text-rose-400"></i>';
+      const chapterIndex = chapters.findIndex(c => c.id === activeChapterId);
+      if (chapterIndex !== -1) {
+        if (!chapters[chapterIndex].resources) {
+          chapters[chapterIndex].resources = [];
         }
-      });
+        chapters[chapterIndex].resources.unshift({
+          type,
+          title,
+          url: url || 'https://placehold.co/800x600/52217e/ffffff?text=' + encodeURIComponent(title),
+          desc
+        });
 
-      if (selectedIndex === q.correctIndex) {
-        currentQuizScore++;
-        document.getElementById('quizScore').innerText = `${currentQuizScore}/${quizData.length}`;
-        showToast('সঠিক উত্তর! চমৎকার হচ্ছে!');
-      }
-
-      explanationBox.innerHTML = `
-        <strong class="text-brand-amber font-bengali"><i class="fa-solid fa-lightbulb"></i> সমাধান বিশ্লেষণ:</strong>
-        <p class="text-slate-300 mt-1 font-bengali">${q.explanation}</p>
-      `;
-      explanationBox.classList.remove('hidden');
-      nextBtn.classList.remove('hidden');
-
-      if (currentQuizIndex === quizData.length - 1) {
-        nextBtn.innerText = 'ফলাফল দেখুন 🏁';
+        saveChaptersToStorage();
+        closeAddResourceModal();
+        renderChapterResources(chapters[chapterIndex]);
+        showToast('রিসোর্স সফলভাবে যুক্ত হয়েছে!');
       }
     }
 
-    function nextQuizQuestion() {
-      if (currentQuizIndex < quizData.length - 1) {
-        currentQuizIndex++;
-        renderQuizQuestion();
-      } else {
-        // Quiz complete screen
-        const container = document.getElementById('quizQuestionBox');
-        document.getElementById('quizExplanation').classList.add('hidden');
-        document.getElementById('nextQuizBtn').classList.add('hidden');
-        document.getElementById('quizStepText').innerText = 'ম্যারাথন সমাপ্ত';
+    function deleteResourceItem(index) {
+      if (!activeChapterId) return;
+      const chapter = chapters.find(c => c.id === activeChapterId);
+      if (!chapter) return;
 
-        container.innerHTML = `
-          <div class="text-center py-6 space-y-3 font-bengali">
-            <div class="w-16 h-16 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center text-3xl mx-auto mb-2">
-              <i class="fa-solid fa-medal"></i>
-            </div>
-            <h4 class="text-xl font-bold text-white">অভিনন্দন! আপনার স্কোর: ${currentQuizScore}/${quizData.length}</h4>
-            <p class="text-xs text-brand-muted max-w-sm mx-auto">
-              ${currentQuizScore === 3 ? 'অসাধারণ প্রস্তুতি! তোমার কনসেপ্ট একদম ক্রিস্টাল ক্লিয়ার।' : 'ভালো প্রচেষ্টা! লেকচার ভিডিও এবং ফর্মুলা শিটগুলো আরেকবার রিভিশন দিয়ে নাও।'}
-            </p>
-            <button onclick="restartQuiz()" class="mt-4 px-6 py-2.5 rounded-full bg-brand-cyan text-brand-dark font-extrabold text-xs shadow-md glow-cyan">
-              আবার চেষ্টা করো ↺
+      if (chapter.resources && chapter.resources[index]) {
+        chapter.resources.splice(index, 1);
+        saveChaptersToStorage();
+        renderChapterResources(chapter);
+        showToast('রিসোর্সটি মুছে ফেলা হয়েছে।');
+      }
+    }
+
+    /* ------------------------------------------------------------------
+       MANAGE CHAPTERS & INDIVIDUAL PASSWORDS
+    ------------------------------------------------------------------- */
+    function openManageChaptersModal() {
+      renderPasswordManagerList();
+      document.getElementById('manageChaptersModal').classList.remove('hidden');
+    }
+
+    function closeManageChaptersModal() {
+      document.getElementById('manageChaptersModal').classList.add('hidden');
+    }
+
+    function renderPasswordManagerList() {
+      const list = document.getElementById('chaptersPasswordManagerList');
+      list.innerHTML = '';
+
+      chapters.forEach((ch, idx) => {
+        const row = document.createElement('div');
+        row.className = "p-3 bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs";
+        row.innerHTML = `
+          <div class="flex-1 font-bengali">
+            <span class="font-bold text-gray-800">${ch.title}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-gray-400 text-[11px]">পাসওয়ার্ড:</span>
+            <input 
+              type="text" 
+              value="${ch.password}" 
+              onchange="updateChapterPassword('${ch.id}', this.value)" 
+              class="w-24 px-2 py-1 border border-gray-300 rounded font-mono text-center text-xs text-purple-900 font-bold focus:border-purple-600 focus:outline-none"
+            >
+            <button onclick="removeChapter('${ch.id}')" class="text-gray-400 hover:text-red-500 p-1" title="মুছে ফেলুন">
+              <i class="fa-solid fa-trash text-xs"></i>
             </button>
           </div>
         `;
+        list.appendChild(row);
+      });
+    }
+
+    function updateChapterPassword(chapterId, newPass) {
+      const ch = chapters.find(c => c.id === chapterId);
+      if (ch) {
+        ch.password = newPass.trim() || '1234';
+        saveChaptersToStorage();
+        showToast(`'${ch.title}' এর পাসওয়ার্ড আপডেট হয়েছে!`);
       }
     }
 
-    function restartQuiz() {
-      currentQuizIndex = 0;
-      currentQuizScore = 0;
-      document.getElementById('quizScore').innerText = `০/${quizData.length}`;
-      document.getElementById('nextQuizBtn').innerText = 'পরবর্তী প্রশ্ন →';
-      renderQuizQuestion();
+    function addNewChapter() {
+      const nameInput = document.getElementById('newChapterName');
+      const passInput = document.getElementById('newChapterPassword');
+
+      const name = nameInput.value.trim();
+      const pass = passInput.value.trim() || '1234';
+
+      if (!name) {
+        showToast('দয়া করে অধ্যায়ের নাম লিখুন!');
+        return;
+      }
+
+      const newId = 'ch-' + Date.now();
+      chapters.push({
+        id: newId,
+        title: name,
+        paper: 'HSC Chemistry',
+        password: pass,
+        resources: []
+      });
+
+      saveChaptersToStorage();
+      nameInput.value = '';
+      passInput.value = '';
+      renderPasswordManagerList();
+      renderChaptersList();
+      showToast(`'${name}' অধ্যায়টি তালিকায় যোগ করা হয়েছে!`);
     }
 
-    /* -------------------------------------------------------------
-       GLOBAL & REAL-TIME SEARCH
-    -------------------------------------------------------------- */
-    function setupSearchListeners() {
-      const globalInput = document.getElementById('globalSearchInput');
-      const mobileInput = document.getElementById('mobileSearchInput');
-      const noteInput = document.getElementById('noteSearchInput');
-
-      function executeSearch(query) {
-        const q = query.toLowerCase().trim();
-        if (!q) {
-          renderPlaylists(initialPlaylists);
-          renderNotes(activeNotes);
-          return;
-        }
-
-        const filteredPlaylists = initialPlaylists.filter(pl => 
-          pl.title.toLowerCase().includes(q) || 
-          pl.subject.toLowerCase().includes(q) ||
-          pl.difficulty.toLowerCase().includes(q)
-        );
-        renderPlaylists(filteredPlaylists);
-
-        const filteredNotes = activeNotes.filter(n => 
-          n.title.toLowerCase().includes(q) || 
-          n.subjectLabel.toLowerCase().includes(q) || 
-          n.author.toLowerCase().includes(q)
-        );
-        renderNotes(filteredNotes);
+    function removeChapter(chapterId) {
+      if (chapters.length <= 1) {
+        showToast('অন্তত একটি অধ্যায় থাকা প্রয়োজন!');
+        return;
+      }
+      chapters = chapters.filter(c => c.id !== chapterId);
+      unlockedChapterIds = unlockedChapterIds.filter(id => id !== chapterId);
+      sessionStorage.setItem('portal_unlocked_ids', JSON.stringify(unlockedChapterIds));
+      
+      if (activeChapterId === chapterId) {
+        activeChapterId = null;
+        emptyStateView.classList.remove('hidden');
+        unlockedContentView.classList.add('hidden');
       }
 
-      if (globalInput) {
-        globalInput.addEventListener('input', (e) => executeSearch(e.target.value));
-      }
-      if (mobileInput) {
-        mobileInput.addEventListener('input', (e) => executeSearch(e.target.value));
-      }
-      if (noteInput) {
-        noteInput.addEventListener('input', (e) => {
-          const val = e.target.value.toLowerCase().trim();
-          const filteredNotes = activeNotes.filter(n => 
-            n.title.toLowerCase().includes(val) || 
-            n.subjectLabel.toLowerCase().includes(val)
-          );
-          renderNotes(filteredNotes);
-        });
-      }
+      saveChaptersToStorage();
+      renderPasswordManagerList();
+      renderChaptersList();
+      showToast('অধ্যায়টি সরানো হয়েছে।');
     }
 
-    /* -------------------------------------------------------------
-       TOAST HELPER
-    -------------------------------------------------------------- */
+    function saveChaptersToStorage() {
+      localStorage.setItem('portal_chem_chapters', JSON.stringify(chapters));
+    }
+
+    /* ------------------------------------------------------------------
+       MEDIA LIGHTBOX VIEWER
+    ------------------------------------------------------------------- */
+    function openMediaViewer(type, title, url) {
+      const viewerTitle = document.getElementById('viewerTitle');
+      const viewerContent = document.getElementById('viewerContent');
+      viewerTitle.innerText = title;
+      viewerContent.innerHTML = '';
+
+      if (type === 'video') {
+        viewerContent.innerHTML = `
+          <div class="w-full aspect-video">
+            <iframe class="w-full h-full rounded-xl" src="${url}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        `;
+      } else if (type === 'photo') {
+        viewerContent.innerHTML = `
+          <img src="${url}" class="max-h-[65vh] w-auto mx-auto rounded-xl object-contain shadow-2xl" alt="${title}">
+        `;
+      } else {
+        // Note / PDF
+        viewerContent.innerHTML = `
+          <div class="bg-white p-8 rounded-xl max-w-xl text-center space-y-4 font-bengali">
+            <i class="fa-regular fa-file-pdf text-6xl text-red-500"></i>
+            <h3 class="text-base font-bold text-gray-900">${title}</h3>
+            <p class="text-xs text-gray-500">এই লেকচার শিটটি পড়ার জন্য নিচের বাটনে ক্লিক করে ওপেন করুন অথবা ডাউনলোড করুন।</p>
+            <div class="flex justify-center gap-3">
+              <a href="${url}" target="_blank" class="px-5 py-2.5 rounded-xl bg-purple-700 text-white font-bold text-xs flex items-center gap-2 hover:bg-purple-800 transition">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> সম্পূর্ণ PDF খুলুন
+              </a>
+            </div>
+          </div>
+        `;
+      }
+
+      document.getElementById('mediaViewerModal').classList.remove('hidden');
+    }
+
+    function closeMediaViewer() {
+      document.getElementById('mediaViewerModal').classList.add('hidden');
+      document.getElementById('viewerContent').innerHTML = '';
+    }
+
+    /* ------------------------------------------------------------------
+       MOBILE SIDEBAR TOGGLE
+    ------------------------------------------------------------------- */
+    function setupMobileSidebar() {
+      const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+      const sidebar = document.getElementById('sidebar');
+      const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+      mobileSidebarToggle.addEventListener('click', () => {
+        sidebar.classList.remove('-translate-x-full');
+        sidebarBackdrop.classList.remove('hidden');
+      });
+
+      sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+    }
+
+    function closeMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+      sidebar.classList.add('-translate-x-full');
+      sidebarBackdrop.classList.add('hidden');
+    }
+
+    function openInstructorModal() {
+      showToast('ডিফল্ট পাসওয়ার্ড 1234 দিয়ে যেকোনো চ্যাপ্টার আনলক করতে পারবেন।');
+    }
+
+    /* ------------------------------------------------------------------
+       UTILITY HELPERS
+    ------------------------------------------------------------------- */
     function showToast(msg) {
-      const toast = document.getElementById('toastNotification');
-      const toastMsg = document.getElementById('toastMessage');
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
       toastMsg.innerText = msg;
       toast.classList.remove('hidden');
       setTimeout(() => {
         toast.classList.add('hidden');
       }, 3500);
     }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
   </script>
+
 </body>
 </html>
